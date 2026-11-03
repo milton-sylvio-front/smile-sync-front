@@ -6,6 +6,8 @@ body {
   color: #06343b;
 }
 
-button {
+button,
+input[type='checkbox'],
+input[type='radio'] {
   cursor: pointer;
 }

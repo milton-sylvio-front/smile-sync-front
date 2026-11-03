@@ -12,12 +12,12 @@ export const homeContent: HomeContent = {
     { label: 'Preços', href: '#precos' },
   ],
   login: { label: 'Entrar', href: '/entrar' },
-  trial: { label: 'Teste Grátis', href: '#teste' },
+  trial: { label: 'Teste Grátis', href: '/cadastre-se' },
   hero: {
     title: 'Modernize sua Clínica Odontológica com Inteligência.',
     description:
       'O sistema de gestão completo para profissionais da odontologia. Automatize agendamentos, digitalize prontuários e reative pacientes com ferramentas de IA.',
-    primaryAction: { label: 'Iniciar Teste Grátis', href: '#teste' },
+    primaryAction: { label: 'Iniciar Teste Grátis', href: '/cadastre-se' },
     secondaryAction: { label: 'Ver Demonstração', href: '#demonstracao' },
     trustLabel: 'Confiado por mais de 2.000 Clínicas',
     clinics: [
@@ -105,8 +105,8 @@ export const homeContent: HomeContent = {
     title: 'Pronto para transformar sua clínica?',
     description:
       'Junte-se a milhares de profissionais da odontologia que confiam no SmileSync para gerir seu futuro clínico e financeiro.',
-    primaryAction: { label: 'Começar Agora', href: '#teste' },
-    secondaryAction: { label: 'Agendar Demonstração', href: '#demonstracao' },
+    primaryAction: { label: 'Começar Agora', href: '/cadastre-se' },
+    secondaryAction: { label: 'Agendar Demonstração', href: 'cadastre-se' },
     note: 'Sem necessidade de cartão de crédito. Teste grátis por 14 dias.',
   },
   footer: {

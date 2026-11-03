@@ -14,7 +14,7 @@ export const loginContent: LoginContent = {
   },
   forgotPassword: {
     label: "Esqueceu a senha?",
-    href: "#recuperar-senha",
+    href: "/recuperar-senha",
   },
   rememberLabel: "Lembrar de mim",
   submitLabel: "Entrar",
