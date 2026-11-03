@@ -1,7 +1,11 @@
-@import "tailwindcss";
-@config "../../tailwind.config.js";
+@import 'tailwindcss';
+@config '../../tailwind.config.js';
 
 body {
   background: #ffffff;
   color: #06343b;
+}
+
+button {
+  cursor: pointer;
 }

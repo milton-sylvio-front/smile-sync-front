@@ -21,7 +21,7 @@ export const loginContent: LoginContent = {
   registerPrompt: "Ainda não tem uma conta?",
   register: {
     label: "Criar uma conta",
-    href: "#cadastro",
+    href: "/cadastre-se",
   },
   copyright: "© 2024 SmileSync Dental Solutions.",
   securityNote: "Acesso seguro gerenciado por criptografia de 256 bits.",
