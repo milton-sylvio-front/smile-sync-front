@@ -1,3 +1,4 @@
+import { Button } from "@/components/button/Button";
 import { DashboardPreview } from "@/modules/home/components/DashboardPreview";
 import type { HomeContent } from "@/modules/home/types/home";
 
@@ -19,18 +20,10 @@ export function Hero({ hero, dashboard }: HeroProps) {
           {hero.description}
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a
-            href={hero.primaryAction.href}
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
-          >
-            {hero.primaryAction.label}
-          </a>
-          <a
-            href={hero.secondaryAction.href}
-            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-primary hover:text-primary"
-          >
+          <Button href={hero.primaryAction.href}>{hero.primaryAction.label}</Button>
+          <Button href={hero.secondaryAction.href} variant="secondary">
             {hero.secondaryAction.label}
-          </a>
+          </Button>
         </div>
         <div className="mt-8 flex items-center gap-3">
           <ul className="flex -space-x-2" aria-label="Clínicas parceiras">

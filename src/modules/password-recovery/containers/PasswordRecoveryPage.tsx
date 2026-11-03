@@ -49,6 +49,11 @@ export function PasswordRecoveryPage({ content }: PasswordRecoveryPageProps) {
             {content.back.label}
           </Link>
         </section>
+
+        <footer className='mt-8 space-y-1 text-center text-xs leading-5 text-slate-400'>
+          <p>{content.copyright}</p>
+          <p>{content.securityNote}</p>
+        </footer>
       </div>
     </main>
   )

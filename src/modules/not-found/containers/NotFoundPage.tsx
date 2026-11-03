@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from '@/components/button/Button'
 import { NotFoundMark } from '@/modules/not-found/components/NotFoundMark'
 import { PreviousPageButton } from '@/modules/not-found/components/PreviousPageButton'
 import type { NotFoundContent } from '@/modules/not-found/types/not-found'
@@ -31,13 +32,10 @@ export function NotFoundPage({ content }: NotFoundPageProps) {
         {content.description}
       </p>
       <div className='mt-8 flex w-full max-w-[320px] flex-col gap-3'>
-        <Link
-          href={content.home.href}
-          className='inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
-        >
+        <Button href={content.home.href} fullWidth>
           <HomeIcon />
           {content.home.label}
-        </Link>
+        </Button>
         <PreviousPageButton label={content.back.label} />
       </div>
       <p className='mt-10 text-[11px] font-medium uppercase tracking-[0.14em] text-[#9aa6ae]'>

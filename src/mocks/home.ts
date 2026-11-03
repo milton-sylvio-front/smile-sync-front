@@ -1,4 +1,5 @@
 import type { HomeContent } from '@/modules/home/types/home'
+import { globalContent } from '@/mocks/global'
 
 export const homeContent: HomeContent = {
   brand: {
@@ -143,7 +144,6 @@ export const homeContent: HomeContent = {
       { id: 'instagram', label: 'Instagram', href: '#instagram' },
       { id: 'linkedin', label: 'LinkedIn', href: '#linkedin' },
     ],
-    copyright:
-      '© 2026 SmileSync Dental Solutions. Todos os direitos reservados.',
+    copyright: globalContent.copyright,
   },
 }

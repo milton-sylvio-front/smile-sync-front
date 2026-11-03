@@ -1,3 +1,4 @@
+import { Button } from '@/components/button/Button'
 import type { HomeContent } from '@/modules/home/types/home'
 
 type CallToActionProps = {
@@ -21,18 +22,19 @@ export function CallToAction({ pricing }: CallToActionProps) {
           {pricing.description}
         </p>
         <div className='mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row'>
-          <a
+          <Button
             href={pricing.primaryAction.href}
-            className='inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90 sm:w-auto'
+            className='w-full sm:w-auto'
           >
             {pricing.primaryAction.label}
-          </a>
-          <a
+          </Button>
+          <Button
             href={pricing.secondaryAction.href}
-            className='inline-flex w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-primary hover:text-primary sm:w-auto'
+            variant='secondary'
+            className='w-full sm:w-auto'
           >
             {pricing.secondaryAction.label}
-          </a>
+          </Button>
         </div>
         <p className='mt-5 text-xs text-muted'>{pricing.note}</p>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/button/Button";
 
 export type EmptyDataContent = {
   title: string;
@@ -61,13 +62,13 @@ export function EmptyData({ content, onClearFilters }: EmptyDataProps) {
       <p className="mt-3 max-w-md text-sm leading-6 text-[#8b97a3]">
         {content.description}
       </p>
-      <button
-        type="button"
+      <Button
+        fullWidth
         onClick={onClearFilters}
-        className="mt-8 inline-flex w-full max-w-[17.5rem] items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="mt-8 max-w-[17.5rem]"
       >
         {content.clearFiltersLabel}
-      </button>
+      </Button>
       <Link
         href={content.addRecord.href}
         className="mt-5 text-sm font-semibold text-primary transition-colors hover:text-primary/80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"

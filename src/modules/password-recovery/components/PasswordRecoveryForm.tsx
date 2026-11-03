@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import { Button } from '@/components/button/Button'
 import type { PasswordRecoveryContent } from '@/modules/password-recovery/types/password-recovery'
 
 type PasswordRecoveryFormProps = {
@@ -97,12 +98,9 @@ export function PasswordRecoveryForm({ content }: PasswordRecoveryFormProps) {
         ) : null}
       </div>
 
-      <button
-        type='submit'
-        className='mt-5 inline-flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
-      >
+      <Button type='submit' size='lg' fullWidth className='mt-5'>
         {content.submitLabel}
-      </button>
+      </Button>
     </form>
   )
 }

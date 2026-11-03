@@ -14,4 +14,6 @@ export type PasswordRecoveryContent = {
   submitLabel: string
   back: PasswordRecoveryLink
   successMessage: string
+  copyright: string
+  securityNote: string
 }

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/button/Button";
 import type { LoginContent } from "@/modules/login/types/login";
 
 type LoginFormProps = {
@@ -139,12 +140,9 @@ export function LoginForm({ content }: LoginFormProps) {
         {content.rememberLabel}
       </label>
 
-      <button
-        type="submit"
-        className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-      >
+      <Button type="submit" size="lg" fullWidth className="mt-5">
         {content.submitLabel}
-      </button>
+      </Button>
     </form>
   );
 }

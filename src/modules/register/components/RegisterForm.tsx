@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import { Button } from '@/components/button/Button'
 import { LegalModal } from '@/modules/register/components/LegalModal'
 import type {
   LegalDocument,
@@ -376,29 +377,27 @@ export function RegisterForm({ content }: RegisterFormProps) {
           />
           <span>
             {content.termsLabel}{' '}
-            <button
-              type='button'
+            <Button
+              variant='link'
               onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
                 setOpenDocument(content.terms)
               }}
-              className='font-semibold text-primary hover:underline cursor-pointer'
             >
-              {content.terms.label} Teste
-            </button>{' '}
+              {content.terms.label}
+            </Button>{' '}
             {content.termsConjunction}{' '}
-            <button
-              type='button'
+            <Button
+              variant='link'
               onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
                 setOpenDocument(content.privacy)
               }}
-              className='font-semibold text-primary hover:underline cursor-pointer'
             >
               {content.privacy.label}
-            </button>
+            </Button>
             {'.'}
           </span>
         </label>
@@ -409,12 +408,9 @@ export function RegisterForm({ content }: RegisterFormProps) {
         ) : null}
       </div>
 
-      <button
-        type='submit'
-        className='mt-5 inline-flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
-      >
+      <Button type='submit' size='lg' fullWidth className='mt-5'>
         {content.submitLabel}
-      </button>
+      </Button>
       {openDocument ? (
         <LegalModal
           document={openDocument}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/button/Button";
 import { Logotype } from "@/components/logotype/Logotype";
 import type { NavLink } from "@/modules/home/types/home";
 
@@ -54,13 +55,9 @@ function NavLinks({
       >
         {login.label}
       </Link>
-      <a
-        href={trial.href}
-        onClick={onNavigate}
-        className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
-      >
+      <Button href={trial.href} size="sm" onClick={onNavigate}>
         {trial.label}
-      </a>
+      </Button>
     </>
   );
 }
@@ -75,16 +72,17 @@ export function Header({ brandName, navigation, login, trial }: HeaderProps) {
         <nav aria-label="Principal" className="hidden items-center gap-7 lg:flex">
           <NavLinks navigation={navigation} login={login} trial={trial} />
         </nav>
-        <button
-          type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-primary lg:hidden"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
           aria-expanded={open}
           aria-controls="menu-movel"
           onClick={() => setOpen((current) => !current)}
         >
           <span className="sr-only">{open ? "Fechar menu" : "Abrir menu"}</span>
           <MenuIcon open={open} />
-        </button>
+        </Button>
       </div>
       {open ? (
         <nav
