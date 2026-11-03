@@ -3,6 +3,7 @@ import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   ReactNode,
+  Ref,
 } from 'react'
 
 export type ButtonVariant =
@@ -25,6 +26,7 @@ type ButtonStyleProps = {
 type ButtonAsButton = ButtonStyleProps &
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'> & {
     href?: never
+    ref?: Ref<HTMLButtonElement>
   }
 
 type ButtonAsAnchor = ButtonStyleProps &
@@ -33,6 +35,7 @@ type ButtonAsAnchor = ButtonStyleProps &
     'className' | 'children' | 'href'
   > & {
     href: string
+    ref?: Ref<HTMLAnchorElement>
   }
 
 export type ButtonProps = ButtonAsButton | ButtonAsAnchor
@@ -89,20 +92,21 @@ export function Button(props: ButtonProps) {
       fullWidth,
       className,
       children,
+      ref,
       ...rest
     } = props
     const classes = buttonClassName({ variant, size, fullWidth, className })
 
     if (isAppRoute(href)) {
       return (
-        <Link href={href} className={classes} {...rest}>
+        <Link ref={ref} href={href} className={classes} {...rest}>
           {children}
         </Link>
       )
     }
 
     return (
-      <a href={href} className={classes} {...rest}>
+      <a ref={ref} href={href} className={classes} {...rest}>
         {children}
       </a>
     )
@@ -115,11 +119,13 @@ export function Button(props: ButtonProps) {
     fullWidth,
     className,
     children,
+    ref,
     ...rest
   } = props
 
   return (
     <button
+      ref={ref}
       type={type}
       className={buttonClassName({ variant, size, fullWidth, className })}
       {...rest}

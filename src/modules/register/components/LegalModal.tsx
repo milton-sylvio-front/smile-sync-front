@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Button } from "@/components/button/Button";
 import type { LegalDocument } from "@/modules/register/types/register";
 
 type LegalModalProps = {
@@ -53,15 +54,16 @@ export function LegalModal({ document, onClose }: LegalModalProps) {
             </h2>
             <p className="mt-1 text-sm text-slate-500">Atualizado em {document.updatedAt}</p>
           </div>
-          <button
+          <Button
             ref={closeRef}
-            type="button"
+            variant="ghost"
+            size="icon"
             aria-label="Fechar"
             onClick={onClose}
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="!h-9 !w-9 shrink-0 !text-slate-500 hover:!bg-slate-100 hover:!text-ink"
           >
             <CloseIcon />
-          </button>
+          </Button>
         </header>
         <div className="overflow-y-auto px-6 py-5">
           {document.sections.map((section) => (
