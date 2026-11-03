@@ -1,4 +1,4 @@
-import type { FeatureIconName } from "@/types/home";
+import type { FeatureIconName } from "@/modules/home/types/home";
 
 type FeatureIconProps = {
   name: FeatureIconName;

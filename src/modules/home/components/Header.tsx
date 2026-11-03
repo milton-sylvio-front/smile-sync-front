@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Logotype } from "@/components/logotype/Logotype";
-import type { NavLink } from "@/types/home";
+import type { NavLink } from "@/modules/home/types/home";
 
 type HeaderProps = {
   brandName: string;

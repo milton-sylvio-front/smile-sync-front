@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { HomePage } from "@/components/home/HomePage";
+import { HomePage } from "@/modules/home/containers/HomePage";
 import { homeContent } from "@/mocks/home";
 
 describe("HomePage", () => {

@@ -1,5 +1,5 @@
 import { Logotype } from "@/components/logotype/Logotype";
-import type { HomeContent, SocialLink } from "@/types/home";
+import type { HomeContent, SocialLink } from "@/modules/home/types/home";
 
 type FooterProps = {
   brandName: string;

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Header } from "@/components/home/Header";
+import { Header } from "@/modules/home/components/Header";
 import { homeContent } from "@/mocks/home";
 
 function renderHeader() {

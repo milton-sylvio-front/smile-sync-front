@@ -1,10 +1,10 @@
-import { CallToAction } from '@/components/home/CallToAction'
-import { Features } from '@/components/home/Features'
-import { Footer } from '@/components/home/Footer'
-import { Header } from '@/components/home/Header'
-import { Hero } from '@/components/home/Hero'
-import { Stats } from '@/components/home/Stats'
-import type { HomeContent } from '../types/home'
+import { CallToAction } from '@/modules/home/components/CallToAction'
+import { Features } from '@/modules/home/components/Features'
+import { Footer } from '@/modules/home/components/Footer'
+import { Header } from '@/modules/home/components/Header'
+import { Hero } from '@/modules/home/components/Hero'
+import { Stats } from '@/modules/home/components/Stats'
+import type { HomeContent } from '@/modules/home/types/home'
 
 type HomePageProps = {
   content: HomeContent

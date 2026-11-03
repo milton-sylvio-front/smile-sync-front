@@ -1,6 +1,5 @@
-import { HomePage } from '@/modules/home/containers/HomePage'
-import { homeContent } from '@/mocks/home'
+import { redirect } from 'next/navigation'
 
-export default function Home() {
-  return <HomePage content={homeContent} />
+export default function HomeRedirect() {
+  redirect('/')
 }

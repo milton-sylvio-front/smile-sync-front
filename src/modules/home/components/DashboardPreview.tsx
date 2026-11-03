@@ -1,4 +1,4 @@
-import type { HomeContent } from "@/types/home";
+import type { HomeContent } from "@/modules/home/types/home";
 
 type DashboardPreviewProps = {
   dashboard: HomeContent["dashboard"];

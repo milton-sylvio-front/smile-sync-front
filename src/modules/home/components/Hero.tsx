@@ -1,5 +1,5 @@
-import { DashboardPreview } from "@/components/home/DashboardPreview";
-import type { HomeContent } from "@/types/home";
+import { DashboardPreview } from "@/modules/home/components/DashboardPreview";
+import type { HomeContent } from "@/modules/home/types/home";
 
 type HeroProps = {
   hero: HomeContent["hero"];

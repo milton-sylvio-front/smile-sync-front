@@ -1,5 +1,5 @@
-import { FeatureIcon } from "@/components/home/FeatureIcon";
-import type { HomeContent } from "@/types/home";
+import { FeatureIcon } from "@/modules/home/components/FeatureIcon";
+import type { HomeContent } from "@/modules/home/types/home";
 
 type FeaturesProps = {
   features: HomeContent["features"];
