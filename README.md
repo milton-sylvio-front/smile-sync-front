@@ -38,3 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## URL production
 
 [https://smile-sync-front.vercel.app/](https://smile-sync-front.vercel.app/)
+
+## Framework UI
+
+[https://tailwindcss.com/docs](Tailwind)

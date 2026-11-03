@@ -19,6 +19,7 @@ export const loginContent: LoginContent = {
   },
   rememberLabel: 'Lembrar de mim',
   submitLabel: 'Entrar',
+  redirectHref: '/painel',
   registerPrompt: 'Ainda não tem uma conta?',
   register: {
     label: 'Criar uma conta',

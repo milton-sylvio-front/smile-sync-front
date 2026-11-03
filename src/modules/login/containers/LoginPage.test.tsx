@@ -2,11 +2,23 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { LoginPage } from '@/modules/login/containers/LoginPage'
 import { loginContent } from '@/mocks/login'
 
+const push = jest.fn()
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: (...args: unknown[]) => push(...args),
+  }),
+}))
+
 function renderLogin() {
   return render(<LoginPage content={loginContent} />)
 }
 
 describe('LoginPage', () => {
+  beforeEach(() => {
+    push.mockClear()
+  })
+
   it('mostra o acesso à clínica com os textos do mock', () => {
     renderLogin()
 
@@ -46,6 +58,7 @@ describe('LoginPage', () => {
       screen.getByText('Informe o endereço de e-mail.'),
     ).toBeInTheDocument()
     expect(screen.getByText('Informe a senha.')).toBeInTheDocument()
+    expect(push).not.toHaveBeenCalled()
   })
 
   it('aceita credenciais e a opção de lembrar o acesso', () => {
@@ -67,8 +80,6 @@ describe('LoginPage', () => {
       screen.queryByText('Informe o endereço de e-mail.'),
     ).not.toBeInTheDocument()
     expect(screen.queryByText('Informe a senha.')).not.toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: loginContent.title }),
-    ).toBeInTheDocument()
+    expect(push).toHaveBeenCalledWith(loginContent.redirectHref)
   })
 })

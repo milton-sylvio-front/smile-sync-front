@@ -18,6 +18,7 @@ export type LoginContent = {
   forgotPassword: LoginLink;
   rememberLabel: string;
   submitLabel: string;
+  redirectHref: string;
   registerPrompt: string;
   register: LoginLink;
   copyright: string;

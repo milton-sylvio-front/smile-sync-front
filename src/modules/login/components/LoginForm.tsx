@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/button/Button";
 import type { LoginContent } from "@/modules/login/types/login";
 
@@ -40,6 +41,7 @@ const fieldClassName =
   "h-11 w-full rounded-lg border border-slate-200 bg-white pl-10 pr-3 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/15 aria-invalid:border-red-600 aria-invalid:focus:ring-red-600/15";
 
 export function LoginForm({ content }: LoginFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -61,6 +63,10 @@ export function LoginForm({ content }: LoginFormProps) {
     }
 
     setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length === 0) {
+      router.push(content.redirectHref);
+    }
   }
 
   return (
