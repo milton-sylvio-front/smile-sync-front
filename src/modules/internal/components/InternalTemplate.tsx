@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { newPatientContent } from '@/mocks/patients'
 import { FinanceToolbar } from '@/modules/finance/components/FinanceToolbar'
+import { ReactivationEngineStatus } from '@/modules/reactivation/components/ReactivationEngineStatus'
 import { PatientBreadcrumb } from '@/modules/patients/components/PatientBreadcrumb'
 import { PatientsToolbar } from '@/modules/patients/components/PatientsToolbar'
 import { ScheduleToolbar } from '@/modules/schedule/components/ScheduleToolbar'
@@ -204,6 +205,7 @@ function InternalShell({
     pathname != null && /^\/pacientes\/[^/]+\/editar$/.test(pathname)
   const isSchedule = pathname === '/agendamentos'
   const isFinance = pathname === '/financeiro'
+  const isReactivation = pathname === '/reativacao'
   const patientHeader = isPatientList ? (
     <PatientsToolbar />
   ) : isNewPatient || isEditPatient ? (
@@ -340,6 +342,8 @@ function InternalShell({
             >
               {isPatientList || isSchedule ? null : isFinance ? (
                 <FinanceToolbar />
+              ) : isReactivation ? (
+                <ReactivationEngineStatus />
               ) : (
               <>
               <div className='relative'>

@@ -35,8 +35,8 @@ export const internalContent: InternalContent = {
       label: 'Reativação com IA',
       href: '/reativacao',
       icon: 'reactivation',
-      title: 'Reativação com IA',
-      description: 'Pacientes para retomar o contato',
+      title: 'Reativação de Pacientes SmileSync IA',
+      description: 'Converta registros inativos em novas consultas automaticamente',
     },
   ],
   user: {
