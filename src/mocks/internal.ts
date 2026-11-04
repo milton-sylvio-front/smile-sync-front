@@ -14,8 +14,8 @@ export const internalContent: InternalContent = {
       label: 'Agendamentos',
       href: '/agendamentos',
       icon: 'calendar',
-      title: 'Agendamentos',
-      description: 'Agenda de consultas da clínica',
+      title: 'Agenda e Marcações',
+      description: 'Consultas da semana, lembretes e encaixes',
     },
     {
       label: 'Pacientes',

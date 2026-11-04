@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { newPatientContent } from '@/mocks/patients'
 import { PatientBreadcrumb } from '@/modules/patients/components/PatientBreadcrumb'
 import { PatientsToolbar } from '@/modules/patients/components/PatientsToolbar'
+import { ScheduleToolbar } from '@/modules/schedule/components/ScheduleToolbar'
 import type {
   InternalContent,
   InternalIcon,
@@ -200,6 +201,7 @@ function InternalShell({
   const isNewPatient = pathname === '/pacientes/novo'
   const isEditPatient =
     pathname != null && /^\/pacientes\/[^/]+\/editar$/.test(pathname)
+  const isSchedule = pathname === '/agendamentos'
   const patientHeader = isPatientList ? (
     <PatientsToolbar />
   ) : isNewPatient || isEditPatient ? (
@@ -207,6 +209,7 @@ function InternalShell({
       items={isNewPatient ? newPatientContent.breadcrumb : newPatientContent.editBreadcrumb}
     />
   ) : null
+  const scheduleHeader = isSchedule ? <ScheduleToolbar /> : null
 
   return (
     <div className='min-h-screen bg-[#f3f5f7] text-ink'>
@@ -309,7 +312,7 @@ function InternalShell({
                   <div className='h-4 w-64 max-w-full animate-pulse rounded bg-slate-200' />
                 </div>
               ) : (
-                patientHeader ?? (
+                patientHeader ?? scheduleHeader ?? (
                   <>
                     <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
                       {current?.title}
@@ -325,7 +328,7 @@ function InternalShell({
             </div>
 
             <div className='flex shrink-0 items-center gap-2 sm:gap-3'>
-              {isPatientList ? null : (
+              {isPatientList || isSchedule ? null : (
               <>
               <div className='relative'>
                 <button
