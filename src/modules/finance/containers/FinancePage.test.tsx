@@ -60,7 +60,7 @@ describe('FinancePage', () => {
   })
 
   it('filtra por status, adiciona uma transação e exporta o relatório', async () => {
-    const createObjectURL = jest.fn(() => 'blob:financeiro')
+    const createObjectURL = jest.fn<string, [Blob]>(() => 'blob:financeiro')
     const revokeObjectURL = jest.fn()
     Object.defineProperty(URL, 'createObjectURL', { writable: true, value: createObjectURL })
     Object.defineProperty(URL, 'revokeObjectURL', { writable: true, value: revokeObjectURL })
@@ -101,7 +101,7 @@ describe('FinancePage', () => {
     fireEvent.click(screen.getByRole('button', { name: financeContent.exportLabel }))
 
     expect(createObjectURL).toHaveBeenCalled()
-    const blob = createObjectURL.mock.calls[0][0] as Blob
+    const blob = createObjectURL.mock.calls[0][0]
     const csv = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = () => resolve(String(reader.result))
