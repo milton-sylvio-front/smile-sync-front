@@ -21,7 +21,7 @@ export const internalContent: InternalContent = {
       label: 'Pacientes',
       href: '/pacientes',
       icon: 'patients',
-      title: 'Pacientes',
+      title: 'Gestão de Pacientes',
       description: 'Prontuários e cadastros da clínica',
     },
     {

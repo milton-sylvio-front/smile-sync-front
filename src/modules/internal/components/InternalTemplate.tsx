@@ -3,6 +3,9 @@
 import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { newPatientContent } from '@/mocks/patients'
+import { PatientBreadcrumb } from '@/modules/patients/components/PatientBreadcrumb'
+import { PatientsToolbar } from '@/modules/patients/components/PatientsToolbar'
 import type {
   InternalContent,
   InternalIcon,
@@ -188,6 +191,16 @@ export function InternalTemplate({ content, children }: InternalTemplateProps) {
     content.navigation.find(
       (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
     ) ?? content.navigation[0]
+  const isPatientList = pathname === '/pacientes'
+  const isNewPatient = pathname === '/pacientes/novo'
+  const isEditPatient = /^\/pacientes\/[^/]+\/editar$/.test(pathname)
+  const patientHeader = isPatientList ? (
+    <PatientsToolbar />
+  ) : isNewPatient || isEditPatient ? (
+    <PatientBreadcrumb
+      items={isNewPatient ? newPatientContent.breadcrumb : newPatientContent.editBreadcrumb}
+    />
+  ) : null
 
   return (
     <div className='min-h-screen bg-[#f3f5f7] text-ink'>
@@ -283,18 +296,24 @@ export function InternalTemplate({ content, children }: InternalTemplateProps) {
 
         <div className='flex min-w-0 flex-1 flex-col'>
           <header className='sticky top-0 z-20 flex items-center justify-between gap-4 bg-[#f3f5f7]/95 px-4 py-5 backdrop-blur sm:px-6 lg:px-8'>
-            <div className='min-w-0'>
-              <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
-                {current?.title}
-              </h1>
-              {current?.description ? (
-                <p className='mt-0.5 truncate text-sm text-slate-500'>
-                  {current.description}
-                </p>
-              ) : null}
+            <div className='min-w-0 flex-1'>
+              {patientHeader ?? (
+                <>
+                  <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
+                    {current?.title}
+                  </h1>
+                  {current?.description ? (
+                    <p className='mt-0.5 truncate text-sm text-slate-500'>
+                      {current.description}
+                    </p>
+                  ) : null}
+                </>
+              )}
             </div>
 
             <div className='flex shrink-0 items-center gap-2 sm:gap-3'>
+              {isPatientList ? null : (
+              <>
               <div className='relative'>
                 <button
                   type='button'
@@ -335,6 +354,8 @@ export function InternalTemplate({ content, children }: InternalTemplateProps) {
                   <p className='text-xs text-slate-500'>{content.user.role}</p>
                 </div>
               </div>
+              </>
+              )}
 
               <button
                 type='button'
