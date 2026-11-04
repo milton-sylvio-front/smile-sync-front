@@ -4,6 +4,7 @@ import { Suspense, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { newPatientContent } from '@/mocks/patients'
+import { FinanceToolbar } from '@/modules/finance/components/FinanceToolbar'
 import { PatientBreadcrumb } from '@/modules/patients/components/PatientBreadcrumb'
 import { PatientsToolbar } from '@/modules/patients/components/PatientsToolbar'
 import { ScheduleToolbar } from '@/modules/schedule/components/ScheduleToolbar'
@@ -202,6 +203,7 @@ function InternalShell({
   const isEditPatient =
     pathname != null && /^\/pacientes\/[^/]+\/editar$/.test(pathname)
   const isSchedule = pathname === '/agendamentos'
+  const isFinance = pathname === '/financeiro'
   const patientHeader = isPatientList ? (
     <PatientsToolbar />
   ) : isNewPatient || isEditPatient ? (
@@ -304,7 +306,11 @@ function InternalShell({
         </aside>
 
         <div className='flex min-w-0 flex-1 flex-col'>
-          <header className='sticky top-0 z-20 flex items-center justify-between gap-4 bg-[#f3f5f7]/95 px-4 py-5 backdrop-blur sm:px-6 lg:px-8'>
+          <header
+            className={`sticky top-0 z-20 flex items-center justify-between gap-4 bg-[#f3f5f7]/95 px-4 py-5 backdrop-blur sm:px-6 lg:px-8 ${
+              isFinance ? 'flex-wrap' : ''
+            }`}
+          >
             <div className='min-w-0 flex-1'>
               {routePending ? (
                 <div className='space-y-2' aria-hidden='true'>
@@ -318,7 +324,7 @@ function InternalShell({
                       {current?.title}
                     </h1>
                     {current?.description ? (
-                      <p className='mt-0.5 truncate text-sm text-slate-500'>
+                      <p className={`mt-0.5 text-sm text-slate-500 ${isFinance ? '' : 'truncate'}`}>
                         {current.description}
                       </p>
                     ) : null}
@@ -327,8 +333,14 @@ function InternalShell({
               )}
             </div>
 
-            <div className='flex shrink-0 items-center gap-2 sm:gap-3'>
-              {isPatientList || isSchedule ? null : (
+            <div
+              className={`flex items-center gap-2 sm:gap-3 ${
+                isFinance ? 'min-w-0 flex-wrap justify-end' : 'shrink-0'
+              }`}
+            >
+              {isPatientList || isSchedule ? null : isFinance ? (
+                <FinanceToolbar />
+              ) : (
               <>
               <div className='relative'>
                 <button

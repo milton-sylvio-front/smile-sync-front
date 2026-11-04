@@ -28,8 +28,8 @@ export const internalContent: InternalContent = {
       label: 'Financeiro',
       href: '/financeiro',
       icon: 'finance',
-      title: 'Financeiro',
-      description: 'Receitas, despesas e fluxo de caixa',
+      title: 'Gestão Financeira',
+      description: 'Acompanhe a lucratividade e o fluxo de caixa da sua clínica',
     },
     {
       label: 'Reativação com IA',

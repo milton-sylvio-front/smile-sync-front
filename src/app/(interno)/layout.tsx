@@ -1,6 +1,8 @@
+import { financeContent } from '@/mocks/finance'
 import { internalContent } from '@/mocks/internal'
 import { newPatientContent, patientsContent } from '@/mocks/patients'
 import { scheduleContent } from '@/mocks/schedule'
+import { FinanceProvider } from '@/modules/finance/state/FinanceProvider'
 import { InternalTemplate } from '@/modules/internal/components/InternalTemplate'
 import { PatientsProvider } from '@/modules/patients/state/PatientsProvider'
 import { ScheduleProvider } from '@/modules/schedule/state/ScheduleProvider'
@@ -9,7 +11,9 @@ export default function InternalLayout({ children }: { children: React.ReactNode
   return (
     <PatientsProvider content={patientsContent} formContent={newPatientContent}>
       <ScheduleProvider content={scheduleContent}>
-        <InternalTemplate content={internalContent}>{children}</InternalTemplate>
+        <FinanceProvider content={financeContent}>
+          <InternalTemplate content={internalContent}>{children}</InternalTemplate>
+        </FinanceProvider>
       </ScheduleProvider>
     </PatientsProvider>
   )
