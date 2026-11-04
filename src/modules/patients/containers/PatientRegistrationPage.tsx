@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { PatientForm } from '@/modules/patients/components/PatientForm'
@@ -10,7 +11,27 @@ type PatientRegistrationPageProps = {
   mode: 'create' | 'edit'
 }
 
+function RegistrationFallback() {
+  return (
+    <section
+      aria-hidden='true'
+      className='mx-auto max-w-5xl animate-pulse rounded-2xl border border-slate-200/80 bg-white p-8'
+    >
+      <div className='h-7 w-48 rounded bg-slate-200' />
+      <div className='mt-6 h-64 rounded-xl bg-slate-100' />
+    </section>
+  )
+}
+
 export function PatientRegistrationPage({ mode }: PatientRegistrationPageProps) {
+  return (
+    <Suspense fallback={<RegistrationFallback />}>
+      <PatientRegistrationContent mode={mode} />
+    </Suspense>
+  )
+}
+
+function PatientRegistrationContent({ mode }: PatientRegistrationPageProps) {
   const router = useRouter()
   const params = useParams<{ id?: string | string[] }>()
   const rawId = params?.id

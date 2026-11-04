@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { Suspense, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { newPatientContent } from '@/mocks/patients'
@@ -182,18 +182,24 @@ function UserAvatar({ initials }: { initials: string }) {
 const iconButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
-export function InternalTemplate({ content, children }: InternalTemplateProps) {
-  const pathname = usePathname() ?? ''
+function InternalShell({
+  content,
+  children,
+  pathname,
+}: InternalTemplateProps & { pathname: string | null }) {
+  const routePending = pathname == null
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const current =
-    content.navigation.find(
-      (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
-    ) ?? content.navigation[0]
+  const current = routePending
+    ? undefined
+    : (content.navigation.find(
+        (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+      ) ?? content.navigation[0])
   const isPatientList = pathname === '/pacientes'
   const isNewPatient = pathname === '/pacientes/novo'
-  const isEditPatient = /^\/pacientes\/[^/]+\/editar$/.test(pathname)
+  const isEditPatient =
+    pathname != null && /^\/pacientes\/[^/]+\/editar$/.test(pathname)
   const patientHeader = isPatientList ? (
     <PatientsToolbar />
   ) : isNewPatient || isEditPatient ? (
@@ -297,17 +303,24 @@ export function InternalTemplate({ content, children }: InternalTemplateProps) {
         <div className='flex min-w-0 flex-1 flex-col'>
           <header className='sticky top-0 z-20 flex items-center justify-between gap-4 bg-[#f3f5f7]/95 px-4 py-5 backdrop-blur sm:px-6 lg:px-8'>
             <div className='min-w-0 flex-1'>
-              {patientHeader ?? (
-                <>
-                  <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
-                    {current?.title}
-                  </h1>
-                  {current?.description ? (
-                    <p className='mt-0.5 truncate text-sm text-slate-500'>
-                      {current.description}
-                    </p>
-                  ) : null}
-                </>
+              {routePending ? (
+                <div className='space-y-2' aria-hidden='true'>
+                  <div className='h-7 w-40 animate-pulse rounded bg-slate-200' />
+                  <div className='h-4 w-64 max-w-full animate-pulse rounded bg-slate-200' />
+                </div>
+              ) : (
+                patientHeader ?? (
+                  <>
+                    <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
+                      {current?.title}
+                    </h1>
+                    {current?.description ? (
+                      <p className='mt-0.5 truncate text-sm text-slate-500'>
+                        {current.description}
+                      </p>
+                    ) : null}
+                  </>
+                )
               )}
             </div>
 
@@ -386,5 +399,29 @@ export function InternalTemplate({ content, children }: InternalTemplateProps) {
         </div>
       </div>
     </div>
+  )
+}
+
+function InternalShellWithPathname({ content, children }: InternalTemplateProps) {
+  const pathname = usePathname() ?? ''
+
+  return (
+    <InternalShell content={content} pathname={pathname}>
+      {children}
+    </InternalShell>
+  )
+}
+
+export function InternalTemplate({ content, children }: InternalTemplateProps) {
+  return (
+    <Suspense
+      fallback={
+        <InternalShell content={content} pathname={null}>
+          {children}
+        </InternalShell>
+      }
+    >
+      <InternalShellWithPathname content={content}>{children}</InternalShellWithPathname>
+    </Suspense>
   )
 }
