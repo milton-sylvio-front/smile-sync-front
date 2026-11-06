@@ -1,44 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SmileSync
 
-## Getting Started
+Frontend do SmileSync, sistema de gestão para clínicas odontológicas. A interface cobre a landing pública e a área da clínica: painel, agenda, pacientes, financeiro e reativação de pacientes.
 
-First, run the development server:
+Produção: [https://smile-sync-front.vercel.app/](https://smile-sync-front.vercel.app/)
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router) e React 19
+- TypeScript
+- [Tailwind CSS](https://tailwindcss.com/docs) 4
+- Jest e Testing Library
+- Gerenciador de pacotes: npm (`package-lock.json`)
+
+O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Não há variáveis de ambiente obrigatórias: os textos e os dados de tela vêm de `src/mocks`.
+
+## Começar
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | O que faz |
+| --- | --- |
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm run start` | Sobe o build |
+| `npm run lint` | ESLint (`eslint-config-next`) |
+| `npm test` | Testes |
+| `npm run test:watch` | Testes em modo watch |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Rotas
 
-## Learn More
+Públicas:
 
-To learn more about Next.js, take a look at the following resources:
+| Rota | Tela |
+| --- | --- |
+| `/` | Landing |
+| `/home` | Redireciona para `/` |
+| `/entrar` | Login |
+| `/cadastre-se` | Cadastro |
+| `/recuperar-senha` | Recuperação de senha |
+| `/relatorios` | Estado vazio (sem dados) |
+| `/componentes/skeleton` | Vitrine do componente de skeleton |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Área interna, com menu lateral em `src/app/(interno)/layout.tsx`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Rota | Tela |
+| --- | --- |
+| `/painel` | Visão geral da clínica |
+| `/agendamentos` | Agenda (dia, semana e mês) e lembretes |
+| `/pacientes` | Lista e prontuário |
+| `/pacientes/novo` | Cadastro de paciente |
+| `/pacientes/[id]/editar` | Edição de paciente |
+| `/financeiro` | Receitas, despesas e fluxo de caixa |
+| `/reativacao` | Reativação de pacientes inativos |
 
-## Deploy on Vercel
+O login só valida o formato do e-mail e da senha e, em seguida, navega para `/painel`. Não existe sessão nem API de autenticação.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Organização
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O alias `@/*` aponta para `src/*`.
 
-## URL production
+```text
+src/
+  app/            rotas do App Router
+  modules/        uma pasta por funcionalidade
+  components/     UI compartilhada (botão, logotipo, skeleton, estado vazio)
+  mocks/          conteúdo e dados de demonstração
+```
 
-[https://smile-sync-front.vercel.app/](https://smile-sync-front.vercel.app/)
+Cada módulo segue, quando faz sentido, `components`, `containers`, `state`, `types` e `lib`. A página em `src/app` só importa o container e o mock correspondente.
 
-## Framework UI
+Pacientes, agenda e financeiro guardam as alterações em estado de cliente (`PatientsProvider`, `ScheduleProvider` e `FinanceProvider`), montados no layout interno. Esse estado vive na memória da aba: um recarregamento volta aos dados de `src/mocks`.
 
-[https://tailwindcss.com/docs](Tailwind)
+## Interface
+
+Idioma da interface: `pt-BR`. Fonte: Montserrat, carregada em `src/app/layout.tsx`.
+
+Tokens em `tailwind.config.js`: `primary` `#004953`, `secondary` `#F9F07E`, `ink` `#06343b`, além de `muted`, `surface`, `cream` e `footer`.
