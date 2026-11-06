@@ -14,7 +14,6 @@ import { RegisterPage } from '@/modules/register/containers/RegisterPage'
 
 const meta = {
   title: 'Telas/Públicas',
-  component: HomePage,
   parameters: {
     docs: {
       description: {
@@ -23,14 +22,14 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof HomePage>
+} satisfies Meta
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
 export const Inicio: Story = {
-  args: { content: homeContent },
+  render: () => <HomePage content={homeContent} />,
 }
 
 export const Entrar: Story = {

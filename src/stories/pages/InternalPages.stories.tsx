@@ -14,7 +14,6 @@ import {
 
 const meta = {
   title: 'Telas/Internas',
-  component: DashboardPage,
   decorators: [withInternalShell],
   parameters: {
     ...internalParameters('/painel'),
@@ -25,14 +24,14 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof DashboardPage>
+} satisfies Meta
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
 export const Painel: Story = {
-  args: { content: dashboardContent },
+  render: () => <DashboardPage content={dashboardContent} />,
 }
 
 export const Agendamentos: Story = {
