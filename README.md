@@ -10,6 +10,7 @@ Produção: [https://smile-sync-front.vercel.app/](https://smile-sync-front.verc
 - TypeScript
 - [Tailwind CSS](https://tailwindcss.com/docs) 4
 - Jest e Testing Library
+- [Storybook](https://storybook.js.org) 10 (`@storybook/nextjs-vite`), com documentação, acessibilidade e testes das stories
 - Gerenciador de pacotes: npm (`package-lock.json`)
 
 O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Não há variáveis de ambiente obrigatórias: os textos e os dados de tela vêm de `src/mocks`.
@@ -31,6 +32,8 @@ Abra [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | ESLint (`eslint-config-next`) |
 | `npm test` | Testes |
 | `npm run test:watch` | Testes em modo watch |
+| `npm run storybook` | Catálogo de componentes em [http://localhost:6006](http://localhost:6006) |
+| `npm run build-storybook` | Build estático do catálogo em `storybook-static` |
 
 ## Rotas
 
@@ -81,3 +84,11 @@ Pacientes, agenda e financeiro guardam as alterações em estado de cliente (`Pa
 Idioma da interface: `pt-BR`. Fonte: Montserrat, carregada em `src/app/layout.tsx`.
 
 Tokens em `tailwind.config.js`: `primary` `#004953`, `secondary` `#F9F07E`, `ink` `#06343b`, além de `muted`, `surface`, `cream` e `footer`.
+
+## Storybook
+
+As stories ficam em `src/stories` e cobrem a identidade visual, os componentes compartilhados (`Button`, `Logotype`, `EmptyData`, `Skeleton`) e as telas públicas e internas. As telas da clínica usam o mesmo menu e os mesmos providers do layout `(interno)`.
+
+```bash
+npm run storybook
+```

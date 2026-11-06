@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -32,6 +34,18 @@
     "jest-environment-jsdom": "^30.5.2",
     "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "storybook": "^10.6.6",
+    "@storybook/nextjs-vite": "^10.6.6",
+    "@chromatic-com/storybook": "latest",
+    "@storybook/addon-vitest": "^10.6.6",
+    "@storybook/addon-a11y": "^10.6.6",
+    "@storybook/addon-docs": "^10.6.6",
+    "vite": "latest",
+    "eslint-plugin-storybook": "^10.6.6",
+    "vitest": "^4",
+    "@vitest/browser-playwright": "^4",
+    "@vitest/coverage-v8": "^4",
+    "playwright": "latest"
   }
 }
