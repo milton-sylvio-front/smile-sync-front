@@ -10,6 +10,7 @@ Produção: [https://smile-sync-front.vercel.app/](https://smile-sync-front.verc
 - TypeScript
 - [Tailwind CSS](https://tailwindcss.com/docs) 4
 - Jest e Testing Library
+- [Playwright](https://playwright.dev) para testes de ponta a ponta
 - [Storybook](https://storybook.js.org) 10 (`@storybook/nextjs-vite`), com documentação, acessibilidade e testes das stories
 - Gerenciador de pacotes: npm (`package-lock.json`)
 
@@ -30,8 +31,11 @@ Abra [http://localhost:3000](http://localhost:3000).
 | `npm run build` | Build de produção |
 | `npm run start` | Sobe o build |
 | `npm run lint` | ESLint (`eslint-config-next`) |
-| `npm test` | Testes |
-| `npm run test:watch` | Testes em modo watch |
+| `npm test` | Testes de componente (Jest) |
+| `npm run test:watch` | Testes de componente em modo watch |
+| `npm run test:e2e` | Testes de ponta a ponta (Playwright, Chromium). Sobe o `next dev` em `127.0.0.1:3000` se a porta estiver livre |
+
+Na primeira execução, instale o navegador com `npx playwright install chromium`. No Linux, o Chromium também precisa das bibliotecas do sistema: `npx playwright install-deps chromium`.
 | `npm run storybook` | Catálogo de componentes em [http://localhost:6006](http://localhost:6006) |
 | `npm run build-storybook` | Build estático do catálogo em `storybook-static` |
 
