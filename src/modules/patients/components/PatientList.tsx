@@ -66,6 +66,7 @@ export function PatientList({ patients, onDelete }: PatientListProps) {
   const { content, query, setQuery } = usePatients()
   const { list } = content
   const [draft, setDraft] = useState(query)
+  const [syncedQuery, setSyncedQuery] = useState(query)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [menuId, setMenuId] = useState<string | null>(null)
   const menuRef = useRef<HTMLTableCellElement>(null)
@@ -74,9 +75,10 @@ export function PatientList({ patients, onDelete }: PatientListProps) {
   const selectedVisible = visibleIds.filter((id) => selectedIds.includes(id))
   const allSelected = visibleIds.length > 0 && selectedVisible.length === visibleIds.length
 
-  useEffect(() => {
+  if (query !== syncedQuery) {
+    setSyncedQuery(query)
     setDraft(query)
-  }, [query])
+  }
 
   useEffect(() => {
     if (selectAllRef.current) {

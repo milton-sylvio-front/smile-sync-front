@@ -18,7 +18,10 @@ O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Não há vari�
 
 ## Começar
 
+Requer Node.js 20.9 ou superior (use Node.js 24 com `nvm use`).
+
 ```bash
+nvm use
 npm install
 npm run dev
 ```
