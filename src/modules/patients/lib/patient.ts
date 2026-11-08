@@ -139,6 +139,13 @@ export function ageFrom(value: string, now = new Date()) {
   return age
 }
 
+export function formatRegisteredDate(date: Date) {
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+
+  return `${day}/${month}/${date.getFullYear()}`
+}
+
 export function formatStamp(date: Date) {
   let hours = date.getHours()
   const period = hours >= 12 ? 'PM' : 'AM'
@@ -215,6 +222,7 @@ export function createPatient(draft: PatientDraft, options: CreatePatientOptions
   return {
     id: options.id,
     recordNumber: options.recordNumber,
+    registeredAt: previous?.registeredAt ?? formatRegisteredDate(new Date()),
     status: previous?.status ?? 'active',
     name,
     photo: draft.photo,

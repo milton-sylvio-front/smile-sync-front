@@ -43,6 +43,7 @@ const states = [
 const sarah: Patient = {
   id: 'sarah-johnson',
   recordNumber: '44829',
+  registeredAt: '24/10/2024',
   status: 'active',
   name: 'Sarah Johnson',
   photo: '',
@@ -137,6 +138,7 @@ const sarah: Patient = {
 const michael: Patient = {
   id: 'michael-chen',
   recordNumber: '44830',
+  registeredAt: '02/09/2024',
   status: 'active',
   name: 'Michael Chen',
   photo: '',
@@ -201,6 +203,7 @@ const michael: Patient = {
 const robert: Patient = {
   id: 'robert-brown',
   recordNumber: '44831',
+  registeredAt: '03/03/2023',
   status: 'inactive',
   name: 'Robert Brown',
   photo: '',
@@ -250,9 +253,28 @@ const robert: Patient = {
 
 export const patientsContent: PatientsContent = {
   title: 'Gestão de Pacientes',
-  searchPlaceholder: 'Buscar por nome, CPF ou celular...',
-  newPatientLabel: 'Novo Paciente',
+  searchPlaceholder: 'Pesquise pelo nome, CPF, celular (com DDD) ou prontuário',
+  newPatientLabel: 'Novo paciente',
   newPatientHref: '/pacientes/novo',
+  list: {
+    title: 'Lista de pacientes',
+    searchAction: 'Buscar',
+    migrateLabel: 'Migre seu histórico de dados',
+    columns: {
+      name: 'Nome',
+      document: 'CPF',
+      phone: 'Celular',
+      record: 'Prontuário',
+      since: 'Paciente desde',
+      status: 'Status',
+      actions: 'Ações',
+    },
+    selectAll: 'Selecionar todos os pacientes',
+    selectPatient: 'Selecionar',
+    actionsMenu: 'Ações de',
+    editPatient: 'Editar paciente',
+    deletePatient: 'Apagar paciente',
+  },
   idPrefix: 'ID:',
   missingPhone: 'Sem telefone',
   status: {

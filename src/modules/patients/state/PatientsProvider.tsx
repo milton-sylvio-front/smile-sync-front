@@ -30,6 +30,7 @@ type PatientsContextValue = {
   ) => void
   addFile: (id: string, file: { name: string; kind: PatientFile['kind'] }) => void
   sign: (id: string) => void
+  removePatient: (id: string) => void
 }
 
 const PatientsContext = createContext<PatientsContextValue | null>(null)
@@ -145,6 +146,10 @@ export function PatientsProvider({
             patient.id === id ? { ...patient, signaturePending: false } : patient,
           ),
         )
+      },
+      removePatient: (id) => {
+        setPatients((current) => current.filter((patient) => patient.id !== id))
+        setSelectedId((current) => (current === id ? null : current))
       },
     }),
     [content, formContent, nextRecordNumber, patients, query, selectedId],

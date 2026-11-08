@@ -3,6 +3,7 @@ import { dashboardContent } from '@/mocks/dashboard'
 import { reactivationContent } from '@/mocks/reactivation'
 import { DashboardPage } from '@/modules/dashboard/containers/DashboardPage'
 import { FinancePage } from '@/modules/finance/containers/FinancePage'
+import { PatientChartPage } from '@/modules/patients/containers/PatientChartPage'
 import { PatientRegistrationPage } from '@/modules/patients/containers/PatientRegistrationPage'
 import { PatientsPage } from '@/modules/patients/containers/PatientsPage'
 import { ReactivationPage } from '@/modules/reactivation/containers/ReactivationPage'
@@ -42,6 +43,11 @@ export const Agendamentos: Story = {
 export const Pacientes: Story = {
   parameters: internalParameters('/pacientes'),
   render: () => <PatientsPage />,
+}
+
+export const FichaPaciente: Story = {
+  parameters: internalParameters('/pacientes/sarah-johnson', [['id', 'sarah-johnson']]),
+  render: () => <PatientChartPage />,
 }
 
 export const NovoPaciente: Story = {

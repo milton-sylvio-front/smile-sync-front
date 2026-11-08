@@ -199,14 +199,17 @@ function InternalShell({
     : (content.navigation.find(
         (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
       ) ?? content.navigation[0])
-  const isPatientList = pathname === '/pacientes'
+  const isPatientDirectory = pathname === '/pacientes'
+  const isPatientChart =
+    pathname != null && pathname !== '/pacientes/novo' && /^\/pacientes\/[^/]+$/.test(pathname)
+  const isPatientList = isPatientDirectory || isPatientChart
   const isNewPatient = pathname === '/pacientes/novo'
   const isEditPatient =
     pathname != null && /^\/pacientes\/[^/]+\/editar$/.test(pathname)
   const isSchedule = pathname === '/agendamentos'
   const isFinance = pathname === '/financeiro'
   const isReactivation = pathname === '/reativacao'
-  const patientHeader = isPatientList ? (
+  const patientHeader = isPatientChart ? (
     <PatientsToolbar />
   ) : isNewPatient || isEditPatient ? (
     <PatientBreadcrumb
@@ -325,7 +328,7 @@ function InternalShell({
                     <h1 className='truncate text-xl font-bold tracking-tight text-primary sm:text-2xl'>
                       {current?.title}
                     </h1>
-                    {current?.description ? (
+                    {current?.description && !isPatientDirectory ? (
                       <p className={`mt-0.5 text-sm text-slate-500 ${isFinance ? '' : 'truncate'}`}>
                         {current.description}
                       </p>

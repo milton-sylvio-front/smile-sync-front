@@ -71,6 +71,7 @@ export type PatientDraft = {
 export type Patient = {
   id: string
   recordNumber: string
+  registeredAt: string
   status: PatientStatus
   name: string
   photo: string
@@ -96,6 +97,25 @@ export type PatientsContent = {
   searchPlaceholder: string
   newPatientLabel: string
   newPatientHref: string
+  list: {
+    title: string
+    searchAction: string
+    migrateLabel: string
+    columns: {
+      name: string
+      document: string
+      phone: string
+      record: string
+      since: string
+      status: string
+      actions: string
+    }
+    selectAll: string
+    selectPatient: string
+    actionsMenu: string
+    editPatient: string
+    deletePatient: string
+  }
   idPrefix: string
   missingPhone: string
   status: Record<PatientStatus, string>
