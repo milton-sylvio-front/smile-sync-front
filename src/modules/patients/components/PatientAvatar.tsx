@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const palettes = [
   'bg-[#d9efe8] text-primary',
   'bg-[#f8e7c9] text-[#8a5a12]',
@@ -15,7 +17,9 @@ function initials(name: string) {
 }
 
 function palette(name: string) {
-  const index = name.split('').reduce((total, char) => total + char.charCodeAt(0), 0)
+  const index = name
+    .split('')
+    .reduce((total, char) => total + char.charCodeAt(0), 0)
   return palettes[index % palettes.length]
 }
 
@@ -37,7 +41,11 @@ export function PatientAvatar({
   return (
     <span className={`relative inline-flex shrink-0 ${dimension}`}>
       {photo ? (
-        <img src={photo} alt='' className='h-full w-full rounded-full object-cover' />
+        <Image
+          src={photo}
+          alt={name}
+          className='h-full w-full rounded-full object-cover'
+        />
       ) : (
         <span
           className={`flex h-full w-full items-center justify-center rounded-full font-bold ${palette(name)}`}

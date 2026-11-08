@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Odontogram } from '@/modules/patients/components/odontogram/Odontogram'
 import {
   formatTarget,
@@ -9,7 +10,6 @@ import {
   type ChartFilter,
   type ChartTarget,
   type Dentition,
-  type FaceId,
   type ProcedureStatus,
 } from '@/modules/patients/lib/odontogram'
 import type { Patient } from '@/modules/patients/types/patients'
@@ -62,7 +62,14 @@ const statusLabel: Record<ProcedureStatus, string> = {
 
 function PlusIcon() {
   return (
-    <svg viewBox='0 0 24 24' aria-hidden='true' className='h-3.5 w-3.5' fill='none' stroke='currentColor' strokeWidth='2'>
+    <svg
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+      className='h-3.5 w-3.5'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='2'
+    >
       <path strokeLinecap='round' d='M12 5v14M5 12h14' />
     </svg>
   )
@@ -70,7 +77,14 @@ function PlusIcon() {
 
 function ClockIcon() {
   return (
-    <svg viewBox='0 0 24 24' aria-hidden='true' className='h-3.5 w-3.5' fill='none' stroke='currentColor' strokeWidth='1.8'>
+    <svg
+      viewBox='0 0 24 24'
+      aria-hidden='true'
+      className='h-3.5 w-3.5'
+      fill='none'
+      stroke='currentColor'
+      strokeWidth='1.8'
+    >
       <circle cx='12' cy='12' r='8' />
       <path strokeLinecap='round' d='M12 8v4.5l3 2' />
     </svg>
@@ -81,7 +95,13 @@ function ChartAvatar({ name, photo }: { name: string; photo: string }) {
   const letter = name.trim().charAt(0).toUpperCase() || '?'
 
   if (photo) {
-    return <img src={photo} alt='' className='h-14 w-14 rounded-full object-cover' />
+    return (
+      <Image
+        src={photo}
+        alt={name}
+        className='h-14 w-14 rounded-full object-cover'
+      />
+    )
   }
 
   return (
@@ -109,18 +129,27 @@ export function PatientChart({ patient }: { patient: Patient }) {
   const [procedures, setProcedures] = useState<Procedure[]>([])
   const [procedureOpen, setProcedureOpen] = useState(false)
   const [procedureName, setProcedureName] = useState('')
-  const [procedureStatus, setProcedureStatus] = useState<ProcedureStatus>('planned')
+  const [procedureStatus, setProcedureStatus] =
+    useState<ProcedureStatus>('planned')
   const [procedureError, setProcedureError] = useState('')
   const [selectionHint, setSelectionHint] = useState('')
   const [notes, setNotes] = useState<Note[]>([])
   const [noteOpen, setNoteOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const [noteError, setNoteError] = useState('')
-  const [analysisNote, setAnalysisNote] = useState('Nenhuma análise de crédito foi realizada.')
+  const [analysisNote, setAnalysisNote] = useState(
+    'Nenhuma análise de crédito foi realizada.',
+  )
 
-  const visibleProcedures = procedures.filter((item) => filter === 'all' || item.status === filter)
-  const marks = procedures.flatMap((item) => item.targets.map((target) => ({ ...target, status: item.status })))
-  const selectionText = selected.map((target) => formatTarget(target, dentition)).join(', ')
+  const visibleProcedures = procedures.filter(
+    (item) => filter === 'all' || item.status === filter,
+  )
+  const marks = procedures.flatMap((item) =>
+    item.targets.map((target) => ({ ...target, status: item.status })),
+  )
+  const selectionText = selected
+    .map((target) => formatTarget(target, dentition))
+    .join(', ')
 
   function changeDentition(next: Dentition) {
     setDentition(next)
@@ -188,13 +217,19 @@ export function PatientChart({ patient }: { patient: Patient }) {
       <nav aria-label='Trilha' className='text-sm text-slate-400'>
         <ol className='flex flex-wrap items-center gap-1.5'>
           <li>
-            <Link href='/painel' className='transition-colors hover:text-primary'>
+            <Link
+              href='/painel'
+              className='transition-colors hover:text-primary'
+            >
               Início
             </Link>
           </li>
           <li aria-hidden='true'>›</li>
           <li>
-            <Link href='/pacientes' className='transition-colors hover:text-primary'>
+            <Link
+              href='/pacientes'
+              className='transition-colors hover:text-primary'
+            >
               Pacientes
             </Link>
           </li>
@@ -210,11 +245,17 @@ export function PatientChart({ patient }: { patient: Patient }) {
           <div className='flex min-w-0 items-center gap-4'>
             <ChartAvatar name={patient.name} photo={patient.photo} />
             <div className='min-w-0'>
-              <h2 className='truncate text-xl font-bold tracking-tight text-ink sm:text-2xl'>{patient.name}</h2>
-              <p className='mt-1 text-sm text-slate-500'>{summaryLine(patient)}</p>
+              <h2 className='truncate text-xl font-bold tracking-tight text-ink sm:text-2xl'>
+                {patient.name}
+              </h2>
+              <p className='mt-1 text-sm text-slate-500'>
+                {summaryLine(patient)}
+              </p>
               <p className='mt-2 inline-flex items-center gap-1.5 rounded-full bg-[#f7f3d4] px-2.5 py-1 text-xs text-slate-600'>
                 <ClockIcon />
-                {patient.anamnesis.length === 0 ? 'Nenhuma anamnese feita' : 'Anamnese preenchida'}
+                {patient.anamnesis.length === 0
+                  ? 'Nenhuma anamnese feita'
+                  : 'Anamnese preenchida'}
               </p>
             </div>
           </div>
@@ -236,7 +277,11 @@ export function PatientChart({ patient }: { patient: Patient }) {
               </Link>
               <button
                 type='button'
-                onClick={() => setAnalysisNote('A análise de crédito ainda não está disponível nesta ficha.')}
+                onClick={() =>
+                  setAnalysisNote(
+                    'A análise de crédito ainda não está disponível nesta ficha.',
+                  )
+                }
                 className='inline-flex h-9 items-center rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-ink transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
               >
                 Nova análise
@@ -246,7 +291,11 @@ export function PatientChart({ patient }: { patient: Patient }) {
         </div>
       </section>
 
-      <div role='tablist' aria-label='Ficha do paciente' className='flex gap-5 overflow-x-auto px-1'>
+      <div
+        role='tablist'
+        aria-label='Ficha do paciente'
+        className='flex gap-5 overflow-x-auto px-1'
+      >
         {tabs.map((item) => {
           const active = tab === item.id
 
@@ -260,7 +309,9 @@ export function PatientChart({ patient }: { patient: Patient }) {
               aria-controls={`painel-${item.id}`}
               onClick={() => setTab(item.id)}
               className={`shrink-0 border-b-2 pb-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${
-                active ? 'border-primary text-ink' : 'border-transparent text-slate-400 hover:text-ink'
+                active
+                  ? 'border-primary text-ink'
+                  : 'border-transparent text-slate-400 hover:text-ink'
               }`}
             >
               {item.label}
@@ -283,13 +334,19 @@ export function PatientChart({ patient }: { patient: Patient }) {
                   <PlusIcon />
                   Novo procedimento
                 </button>
-                <div role='group' aria-label='Dentição' className='inline-flex items-center gap-1'>
+                <div
+                  role='group'
+                  aria-label='Dentição'
+                  className='inline-flex items-center gap-1'
+                >
                   <button
                     type='button'
                     aria-pressed={dentition === 'permanent'}
                     onClick={() => changeDentition('permanent')}
                     className={`h-9 rounded-full px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                      dentition === 'permanent' ? 'bg-primary text-white' : 'text-slate-500 hover:text-ink'
+                      dentition === 'permanent'
+                        ? 'bg-primary text-white'
+                        : 'text-slate-500 hover:text-ink'
                     }`}
                   >
                     Permanente
@@ -299,7 +356,9 @@ export function PatientChart({ patient }: { patient: Patient }) {
                     aria-pressed={dentition === 'deciduous'}
                     onClick={() => changeDentition('deciduous')}
                     className={`h-9 rounded-full px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                      dentition === 'deciduous' ? 'bg-primary text-white' : 'text-slate-500 hover:text-ink'
+                      dentition === 'deciduous'
+                        ? 'bg-primary text-white'
+                        : 'text-slate-500 hover:text-ink'
                     }`}
                   >
                     Decídua
@@ -307,7 +366,9 @@ export function PatientChart({ patient }: { patient: Patient }) {
                 </div>
               </div>
 
-              {selectionHint ? <p className='mt-3 text-sm text-rose-600'>{selectionHint}</p> : null}
+              {selectionHint ? (
+                <p className='mt-3 text-sm text-rose-600'>{selectionHint}</p>
+              ) : null}
 
               {procedureOpen ? (
                 <form
@@ -317,7 +378,10 @@ export function PatientChart({ patient }: { patient: Patient }) {
                     saveProcedure()
                   }}
                 >
-                  <label className='block text-xs font-medium text-slate-500' htmlFor='procedimento-nome'>
+                  <label
+                    className='block text-xs font-medium text-slate-500'
+                    htmlFor='procedimento-nome'
+                  >
                     Procedimento
                   </label>
                   <input
@@ -328,22 +392,34 @@ export function PatientChart({ patient }: { patient: Patient }) {
                     className='mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15'
                   />
                   <p className='mt-3 text-sm text-slate-600'>
-                    Dente: <span className='font-semibold text-ink'>{selectionText}</span>
+                    Dente:{' '}
+                    <span className='font-semibold text-ink'>
+                      {selectionText}
+                    </span>
                   </p>
-                  <label className='mt-3 block text-xs font-medium text-slate-500' htmlFor='procedimento-estado'>
+                  <label
+                    className='mt-3 block text-xs font-medium text-slate-500'
+                    htmlFor='procedimento-estado'
+                  >
                     Estado
                   </label>
                   <select
                     id='procedimento-estado'
                     value={procedureStatus}
-                    onChange={(event) => setProcedureStatus(event.target.value as ProcedureStatus)}
+                    onChange={(event) =>
+                      setProcedureStatus(event.target.value as ProcedureStatus)
+                    }
                     className='mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15'
                   >
                     <option value='planned'>A realizar</option>
                     <option value='done'>Realizado</option>
                     <option value='existing'>Pré-existente</option>
                   </select>
-                  {procedureError ? <p className='mt-2 text-xs text-rose-600'>{procedureError}</p> : null}
+                  {procedureError ? (
+                    <p className='mt-2 text-xs text-rose-600'>
+                      {procedureError}
+                    </p>
+                  ) : null}
                   <div className='mt-3 flex justify-end gap-2'>
                     <button
                       type='button'
@@ -369,21 +445,32 @@ export function PatientChart({ patient }: { patient: Patient }) {
                   marks={marks}
                   filter={filter}
                   onToggleTooth={(tooth) => {
-                    setSelected((current) => toggleTarget(current, { tooth, face: null }))
+                    setSelected((current) =>
+                      toggleTarget(current, { tooth, face: null }),
+                    )
                     setSelectionHint('')
                   }}
                   onToggleFace={(tooth, face) => {
-                    setSelected((current) => toggleTarget(current, { tooth, face }))
+                    setSelected((current) =>
+                      toggleTarget(current, { tooth, face }),
+                    )
                     setSelectionHint('')
                   }}
                 />
               </div>
 
-              <p className='mt-4 min-h-5 text-sm text-primary' aria-live='polite'>
+              <p
+                className='mt-4 min-h-5 text-sm text-primary'
+                aria-live='polite'
+              >
                 {selectionText ? `Selecionado: ${selectionText}` : ''}
               </p>
 
-              <div role='radiogroup' aria-label='Filtrar ficha' className='mt-2 flex flex-wrap gap-2'>
+              <div
+                role='radiogroup'
+                aria-label='Filtrar ficha'
+                className='mt-2 flex flex-wrap gap-2'
+              >
                 {filters.map((item) => {
                   const active = filter === item.id
 
@@ -402,7 +489,9 @@ export function PatientChart({ patient }: { patient: Patient }) {
                     >
                       <span
                         className={`h-2.5 w-2.5 rounded-full border ${
-                          active ? 'border-primary bg-primary' : 'border-slate-400 bg-white'
+                          active
+                            ? 'border-primary bg-primary'
+                            : 'border-slate-400 bg-white'
                         }`}
                       />
                       {item.label}
@@ -423,7 +512,8 @@ export function PatientChart({ patient }: { patient: Patient }) {
                 </div>
                 {visibleProcedures.length === 0 ? (
                   <p className='px-6 py-8 text-center text-sm text-slate-400'>
-                    Adicione procedimentos para facilitar o acompanhamento dos tratamentos do seu paciente.
+                    Adicione procedimentos para facilitar o acompanhamento dos
+                    tratamentos do seu paciente.
                   </p>
                 ) : (
                   <ul className='divide-y divide-slate-100'>
@@ -432,14 +522,24 @@ export function PatientChart({ patient }: { patient: Patient }) {
                         key={item.id}
                         className='grid min-w-[520px] grid-cols-[1.4fr_1fr_0.8fr_auto] items-center gap-3 px-4 py-3 text-sm'
                       >
-                        <span className='font-semibold text-ink'>{item.name}</span>
-                        <span className='text-slate-600'>
-                          {item.targets.map((target) => formatTarget(target, dentition)).join(', ')}
+                        <span className='font-semibold text-ink'>
+                          {item.name}
                         </span>
-                        <span className='text-slate-600'>{statusLabel[item.status]}</span>
+                        <span className='text-slate-600'>
+                          {item.targets
+                            .map((target) => formatTarget(target, dentition))
+                            .join(', ')}
+                        </span>
+                        <span className='text-slate-600'>
+                          {statusLabel[item.status]}
+                        </span>
                         <button
                           type='button'
-                          onClick={() => setProcedures((current) => current.filter((entry) => entry.id !== item.id))}
+                          onClick={() =>
+                            setProcedures((current) =>
+                              current.filter((entry) => entry.id !== item.id),
+                            )
+                          }
                           className='text-sm font-semibold text-primary hover:underline'
                         >
                           Remover
@@ -463,7 +563,9 @@ export function PatientChart({ patient }: { patient: Patient }) {
               onText={setNoteText}
               onSave={saveNote}
               onCancel={() => setNoteOpen(false)}
-              onRemove={(id) => setNotes((current) => current.filter((note) => note.id !== id))}
+              onRemove={(id) =>
+                setNotes((current) => current.filter((note) => note.id !== id))
+              }
             />
           </div>
         ) : (
@@ -499,7 +601,9 @@ function NotesPanel({
     <section className='rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.6)]'>
       <h3 className='text-base font-bold text-ink'>Anotações</h3>
       {notes.length === 0 ? (
-        <p className='mt-3 text-sm leading-6 text-slate-500'>O paciente não possui anotações adicionadas.</p>
+        <p className='mt-3 text-sm leading-6 text-slate-500'>
+          O paciente não possui anotações adicionadas.
+        </p>
       ) : (
         <ul className='mt-3 space-y-2'>
           {notes.map((note) => (
@@ -566,7 +670,13 @@ function NotesPanel({
   )
 }
 
-function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient: Patient }) {
+function OtherPanel({
+  tab,
+  patient,
+}: {
+  tab: Exclude<ChartTab, 'chart'>
+  patient: Patient
+}) {
   if (tab === 'anamnesis') {
     return (
       <section className='rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.6)]'>
@@ -576,9 +686,14 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
         ) : (
           <dl className='mt-4 grid gap-3 sm:grid-cols-2'>
             {patient.anamnesis.map((item) => (
-              <div key={item.label} className='rounded-xl bg-surface px-3 py-2.5'>
+              <div
+                key={item.label}
+                className='rounded-xl bg-surface px-3 py-2.5'
+              >
                 <dt className='text-xs text-slate-500'>{item.label}</dt>
-                <dd className='mt-1 text-sm font-semibold text-ink'>{item.value}</dd>
+                <dd className='mt-1 text-sm font-semibold text-ink'>
+                  {item.value}
+                </dd>
               </div>
             ))}
           </dl>
@@ -592,7 +707,9 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
       <section className='rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.6)]'>
         <h3 className='text-base font-bold text-ink'>Evoluções</h3>
         {patient.treatments.length === 0 ? (
-          <p className='mt-3 text-sm text-slate-500'>Nenhuma evolução registrada.</p>
+          <p className='mt-3 text-sm text-slate-500'>
+            Nenhuma evolução registrada.
+          </p>
         ) : (
           <ul className='mt-4 space-y-4'>
             {patient.treatments.map((entry) => (
@@ -600,8 +717,12 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
                 <p className='text-xs text-slate-400'>
                   {entry.date} · {entry.time}
                 </p>
-                <h4 className='mt-1 text-sm font-bold text-ink'>{entry.title}</h4>
-                <p className='mt-1 text-sm text-slate-500'>{entry.description}</p>
+                <h4 className='mt-1 text-sm font-bold text-ink'>
+                  {entry.title}
+                </h4>
+                <p className='mt-1 text-sm text-slate-500'>
+                  {entry.description}
+                </p>
               </li>
             ))}
           </ul>
@@ -616,13 +737,20 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
         <h3 className='text-base font-bold text-ink'>Financeiro</h3>
         <p className='mt-1 text-sm text-slate-500'>Saldo: {patient.balance}</p>
         {patient.ledger.length === 0 ? (
-          <p className='mt-3 text-sm text-slate-500'>Nenhum lançamento financeiro.</p>
+          <p className='mt-3 text-sm text-slate-500'>
+            Nenhum lançamento financeiro.
+          </p>
         ) : (
           <ul className='mt-4 divide-y divide-slate-100'>
             {patient.ledger.map((entry) => (
-              <li key={entry.id} className='flex items-center justify-between gap-3 py-3 text-sm'>
+              <li
+                key={entry.id}
+                className='flex items-center justify-between gap-3 py-3 text-sm'
+              >
                 <span>
-                  <span className='block font-semibold text-ink'>{entry.description}</span>
+                  <span className='block font-semibold text-ink'>
+                    {entry.description}
+                  </span>
                   <span className='text-xs text-slate-400'>{entry.date}</span>
                 </span>
                 <span className='font-bold text-ink'>{entry.amount}</span>
@@ -643,7 +771,10 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
         ) : (
           <ul className='mt-4 grid gap-3 sm:grid-cols-3'>
             {patient.files.map((file) => (
-              <li key={file.id} className='rounded-xl border border-slate-200 px-3 py-4 text-sm text-ink'>
+              <li
+                key={file.id}
+                className='rounded-xl border border-slate-200 px-3 py-4 text-sm text-ink'
+              >
                 {file.name}
               </li>
             ))}
@@ -658,12 +789,19 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
       <section className='rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.6)]'>
         <h3 className='text-base font-bold text-ink'>Consultas</h3>
         {patient.visits.length === 0 ? (
-          <p className='mt-3 text-sm text-slate-500'>Nenhuma consulta registrada.</p>
+          <p className='mt-3 text-sm text-slate-500'>
+            Nenhuma consulta registrada.
+          </p>
         ) : (
           <ul className='mt-4 space-y-3'>
             {patient.visits.map((visit) => (
-              <li key={visit.id} className='rounded-xl border border-slate-200 px-4 py-3'>
-                <p className='text-sm font-semibold text-ink'>{visit.procedure}</p>
+              <li
+                key={visit.id}
+                className='rounded-xl border border-slate-200 px-4 py-3'
+              >
+                <p className='text-sm font-semibold text-ink'>
+                  {visit.procedure}
+                </p>
                 <p className='text-xs text-slate-500'>
                   {visit.date} · {visit.time} · {visit.professional}
                 </p>
@@ -677,9 +815,13 @@ function OtherPanel({ tab, patient }: { tab: Exclude<ChartTab, 'chart'>; patient
 
   return (
     <section className='rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.6)]'>
-      <h3 className='text-base font-bold text-ink'>{tab === 'quotes' ? 'Orçamentos' : 'Documentos'}</h3>
+      <h3 className='text-base font-bold text-ink'>
+        {tab === 'quotes' ? 'Orçamentos' : 'Documentos'}
+      </h3>
       <p className='mt-3 text-sm text-slate-500'>
-        {tab === 'quotes' ? 'Nenhum orçamento registrado.' : 'Nenhum documento registrado.'}
+        {tab === 'quotes'
+          ? 'Nenhum orçamento registrado.'
+          : 'Nenhum documento registrado.'}
       </p>
     </section>
   )
