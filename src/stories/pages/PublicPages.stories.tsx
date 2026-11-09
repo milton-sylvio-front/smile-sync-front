@@ -11,6 +11,7 @@ import { LoginPage } from '@/modules/login/containers/LoginPage'
 import { NotFoundPage } from '@/modules/not-found/containers/NotFoundPage'
 import { PasswordRecoveryPage } from '@/modules/password-recovery/containers/PasswordRecoveryPage'
 import { RegisterPage } from '@/modules/register/containers/RegisterPage'
+import { QueryProvider } from '@/providers/QueryProvider'
 
 const meta = {
   title: 'Telas/Públicas',
@@ -37,7 +38,11 @@ export const Entrar: Story = {
 }
 
 export const Cadastro: Story = {
-  render: () => <RegisterPage content={registerContent} />,
+  render: () => (
+    <QueryProvider>
+      <RegisterPage content={registerContent} />
+    </QueryProvider>
+  ),
 }
 
 export const RecuperarSenha: Story = {

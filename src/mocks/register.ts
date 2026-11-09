@@ -5,6 +5,10 @@ export const registerContent: RegisterContent = {
   brandName: 'SmileSync',
   title: 'Crie sua conta clínica',
   subtitle: 'Junte-se a milhares de profissionais da odontologia hoje mesmo',
+  clinicName: {
+    label: 'Nome da Clínica',
+    placeholder: 'Clínica Sorriso',
+  },
   fullName: {
     label: 'Nome Completo',
     placeholder: 'Dra. Joana Silva',

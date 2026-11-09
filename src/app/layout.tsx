@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${montserrat.variable} h-full antialiased`}>
-      <body className="min-h-full bg-white font-sans text-ink">{children}</body>
+      <body className="min-h-full bg-white font-sans text-ink">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }

@@ -24,6 +24,7 @@ export type RegisterContent = {
   brandName: string
   title: string
   subtitle: string
+  clinicName: RegisterField
   fullName: RegisterField
   birthDate: RegisterField
   document: RegisterField
