@@ -4,6 +4,8 @@ import { Suspense, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { newPatientContent } from '@/mocks/patients'
+import { useActiveSession } from '@/modules/auth/hooks/useActiveSession'
+import { clearAccessToken, readAccessToken } from '@/modules/auth/session'
 import { FinanceToolbar } from '@/modules/finance/components/FinanceToolbar'
 import { ReactivationEngineStatus } from '@/modules/reactivation/components/ReactivationEngineStatus'
 import { PatientBreadcrumb } from '@/modules/patients/components/PatientBreadcrumb'
@@ -185,6 +187,30 @@ function UserAvatar({ initials }: { initials: string }) {
 const iconButtonClass =
   'inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary'
 
+const sessionRoleLabels: Record<string, string> = {
+  OWNER: 'Diretor clínico',
+  ADMIN: 'Administrador',
+  DENTIST: 'Dentista',
+  RECEPTION: 'Recepção',
+}
+
+function sessionRoleLabel(role: string) {
+  return sessionRoleLabels[role] ?? role
+}
+
+function initialsFromName(name: string) {
+  const parts = name
+    .trim()
+    .split(/\s+/)
+    .filter((part) => part.length > 1 && !part.endsWith('.'))
+  const source = parts.length > 0 ? parts : name.trim().split(/\s+/).filter(Boolean)
+
+  return source
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('')
+}
+
 function InternalShell({
   content,
   children,
@@ -194,6 +220,11 @@ function InternalShell({
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const session = useActiveSession(readAccessToken())
+  const sessionUser = session.data
+  const userName = sessionUser?.name ?? ''
+  const userRole = sessionUser ? sessionRoleLabel(sessionUser.role) : ''
+  const userInitials = userName ? initialsFromName(userName) : ''
   const current = routePending
     ? undefined
     : (content.navigation.find(
@@ -302,6 +333,7 @@ function InternalShell({
 
             <Link
               href={content.logout.href}
+              onClick={() => clearAccessToken()}
               className='mt-2 flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-white/85 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary'
             >
               <LogoutIcon />
@@ -383,10 +415,10 @@ function InternalShell({
               <span className='hidden h-8 w-px bg-slate-200 sm:block' aria-hidden='true' />
 
               <div className='hidden items-center gap-2.5 sm:flex'>
-                <UserAvatar initials={content.user.initials} />
+                <UserAvatar initials={userInitials} />
                 <div className='leading-tight'>
-                  <p className='text-sm font-semibold text-ink'>{content.user.name}</p>
-                  <p className='text-xs text-slate-500'>{content.user.role}</p>
+                  <p className='text-sm font-semibold text-ink'>{userName}</p>
+                  <p className='text-xs text-slate-500'>{userRole}</p>
                 </div>
               </div>
               </>

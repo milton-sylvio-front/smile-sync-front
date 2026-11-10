@@ -1,6 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { login } from "./support";
 
+test("a área interna exige uma sessão ativa", async ({ page }) => {
+  await page.goto("/painel");
+  await expect(page).toHaveURL(/\/entrar$/);
+  await expect(page.getByRole("heading", { name: "Bem-vindo de volta" })).toBeVisible();
+});
+
 test("o login só segue com e-mail e senha válidos", async ({ page }) => {
   await page.goto("/entrar");
   await page.getByRole("button", { name: "Entrar" }).click();

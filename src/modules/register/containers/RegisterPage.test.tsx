@@ -102,8 +102,6 @@ describe("RegisterPage", () => {
     fireEvent.click(screen.getByRole("button", { name: registerContent.submitLabel }));
 
     expect(screen.getByText("Informe o nome completo.")).toBeInTheDocument();
-    expect(screen.getByText("Informe o nome da clínica.")).toBeInTheDocument();
-    expect(screen.getByText("Informe a data de nascimento.")).toBeInTheDocument();
     expect(screen.getByText("Informe o CPF ou CNPJ.")).toBeInTheDocument();
     expect(screen.getByText("Informe o celular.")).toBeInTheDocument();
     expect(screen.getByText("Informe o endereço de e-mail.")).toBeInTheDocument();
@@ -127,22 +125,60 @@ describe("RegisterPage", () => {
             clinicName: "Clínica Sorriso",
             name: "Dra. Joana Silva",
             email: "joana@clinica.com",
+            birthDate: "1990-04-12",
+            document: "123.456.789-01",
+            phone: "+55 (11) 90000-0000",
+            termsAccepted: true,
             password: "Senha-forte-12!",
           }),
         }),
       );
     });
 
-    expect(screen.getByLabelText(registerContent.birthDate.label)).toHaveValue("12/04/1990");
-    expect(screen.getByLabelText(registerContent.document.label)).toHaveValue("123.456.789-01");
-    expect(screen.getByLabelText(registerContent.phone.label)).toHaveValue("+55 (11) 90000-0000");
-    expect(screen.getByRole("checkbox")).toBeChecked();
+    expect(screen.getByLabelText(registerContent.clinicName.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.fullName.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.birthDate.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.document.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.phone.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.email.label)).toHaveValue("");
+    expect(screen.getByLabelText(registerContent.password.label)).toHaveValue("");
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
     expect(screen.queryByText("Informe o nome completo.")).not.toBeInTheDocument();
     expect(screen.queryByText("Aceite os termos para criar a conta.")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: registerContent.title })).toBeInTheDocument();
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Conta criada com sucesso. Você já pode fazer login.",
     );
+  });
+
+  it("cria a conta sem nome da clínica e data de nascimento", async () => {
+    const fetchMock = mockSuccessfulRegistration();
+    renderRegister();
+    fillValidForm();
+    fireEvent.change(screen.getByLabelText(registerContent.clinicName.label), {
+      target: { value: "" },
+    });
+    fireEvent.change(screen.getByLabelText(registerContent.birthDate.label), {
+      target: { value: "" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: registerContent.submitLabel }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        "http://localhost:3333/api/auth/register",
+        expect.objectContaining({
+          body: JSON.stringify({
+            name: "Dra. Joana Silva",
+            email: "joana@clinica.com",
+            document: "123.456.789-01",
+            phone: "+55 (11) 90000-0000",
+            termsAccepted: true,
+            password: "Senha-forte-12!",
+          }),
+        }),
+      );
+    });
   });
 
   it("aceita uma senha válida com exatamente 8 caracteres", async () => {

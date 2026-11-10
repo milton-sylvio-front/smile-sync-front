@@ -1,6 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { LoginPage } from '@/modules/login/containers/LoginPage'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { loginContent } from '@/mocks/login'
+import { accessTokenStorageKey, readAccessToken } from '@/modules/auth/session'
+import { LoginPage } from '@/modules/login/containers/LoginPage'
 
 const push = jest.fn()
 
@@ -11,12 +13,43 @@ jest.mock('next/navigation', () => ({
 }))
 
 function renderLogin() {
-  return render(<LoginPage content={loginContent} />)
+  const queryClient = new QueryClient({
+    defaultOptions: { mutations: { retry: false } },
+  })
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <LoginPage content={loginContent} />
+    </QueryClientProvider>,
+  )
+}
+
+function mockSuccessfulLogin() {
+  return jest.spyOn(global, 'fetch').mockResolvedValue({
+    ok: true,
+    json: async () => ({
+      accessToken: 'access-token',
+      user: {
+        id: 'user-id',
+        clinicId: 'clinic-id',
+        name: 'Dr. Silva',
+        email: 'doutor.silva@exemplo.com',
+        role: 'OWNER',
+      },
+    }),
+  } as Response)
 }
 
 describe('LoginPage', () => {
   beforeEach(() => {
     push.mockClear()
+    sessionStorage.clear()
+    localStorage.clear()
+    global.fetch = jest.fn()
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   it('mostra o acesso à clínica com os textos do mock', () => {
@@ -61,7 +94,40 @@ describe('LoginPage', () => {
     expect(push).not.toHaveBeenCalled()
   })
 
-  it('aceita credenciais e a opção de lembrar o acesso', () => {
+  it('entra com e-mail e senha e abre o painel', async () => {
+    const fetchMock = mockSuccessfulLogin()
+    renderLogin()
+
+    fireEvent.change(screen.getByLabelText(loginContent.email.label), {
+      target: { value: 'doutor.silva@exemplo.com' },
+    })
+    fireEvent.change(screen.getByLabelText(loginContent.password.label), {
+      target: { value: 'clinica-segura' },
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: loginContent.submitLabel }),
+    )
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        'http://localhost:3333/api/auth/login',
+        expect.objectContaining({
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: 'doutor.silva@exemplo.com',
+            password: 'clinica-segura',
+          }),
+        }),
+      )
+    })
+    expect(sessionStorage.getItem(accessTokenStorageKey)).toBe('access-token')
+    expect(localStorage.getItem(accessTokenStorageKey)).toBeNull()
+    expect(push).toHaveBeenCalledWith(loginContent.redirectHref)
+  })
+
+  it('guarda o token no navegador quando a opção de lembrar o acesso está marcada', async () => {
+    mockSuccessfulLogin()
     renderLogin()
 
     fireEvent.change(screen.getByLabelText(loginContent.email.label), {
@@ -75,11 +141,40 @@ describe('LoginPage', () => {
       screen.getByRole('button', { name: loginContent.submitLabel }),
     )
 
+    await waitFor(() => {
+      expect(localStorage.getItem(accessTokenStorageKey)).toBe('access-token')
+    })
+    expect(sessionStorage.getItem(accessTokenStorageKey)).toBeNull()
+    expect(readAccessToken()).toBe('access-token')
     expect(screen.getByLabelText(loginContent.rememberLabel)).toBeChecked()
-    expect(
-      screen.queryByText('Informe o endereço de e-mail.'),
-    ).not.toBeInTheDocument()
-    expect(screen.queryByText('Informe a senha.')).not.toBeInTheDocument()
-    expect(push).toHaveBeenCalledWith(loginContent.redirectHref)
+  })
+
+  it('mostra a mensagem de erro retornada pela API', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: false,
+      json: async () => ({ error: 'E-mail ou senha inválidos.' }),
+    } as Response)
+    renderLogin()
+
+    fireEvent.change(screen.getByLabelText(loginContent.email.label), {
+      target: { value: 'doutor.silva@exemplo.com' },
+    })
+    fireEvent.change(screen.getByLabelText(loginContent.password.label), {
+      target: { value: 'senha-errada' },
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: loginContent.submitLabel }),
+    )
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'E-mail ou senha inválidos.',
+    )
+    expect(push).not.toHaveBeenCalled()
+    expect(readAccessToken()).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Fechar aviso' }))
+    await waitFor(() => {
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    })
   })
 })

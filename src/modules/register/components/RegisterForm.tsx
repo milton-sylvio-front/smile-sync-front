@@ -1,7 +1,9 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import { Alert } from '@/components/alert/Alert'
 import { Button } from '@/components/button/Button'
+import { Toast } from '@/components/toast/Toast'
 import { LegalModal } from '@/modules/register/components/LegalModal'
 import { useRegister } from '@/modules/register/hooks/useRegister'
 import type {
@@ -143,7 +145,7 @@ export function RegisterForm({ content }: RegisterFormProps) {
     const documentDigits = digits(document)
     const phoneDigits = digits(phone)
 
-    if (trimmedClinicName.length < 2) {
+    if (trimmedClinicName && trimmedClinicName.length < 2) {
       nextErrors.clinicName = 'Informe o nome da clínica.'
     }
 
@@ -151,9 +153,7 @@ export function RegisterForm({ content }: RegisterFormProps) {
       nextErrors.fullName = 'Informe o nome completo.'
     }
 
-    if (!birthDate) {
-      nextErrors.birthDate = 'Informe a data de nascimento.'
-    } else if (!isValidBirthDate(birthDate)) {
+    if (birthDate && !isValidBirthDate(birthDate)) {
       nextErrors.birthDate = 'Informe uma data de nascimento válida.'
     }
 
@@ -198,12 +198,37 @@ export function RegisterForm({ content }: RegisterFormProps) {
       return
     }
 
-    registerMutation.mutate({
-      clinicName: trimmedClinicName,
-      name: trimmedName,
-      email: trimmedEmail,
-      password,
-    })
+    registerMutation.mutate(
+      {
+        ...(trimmedClinicName ? { clinicName: trimmedClinicName } : {}),
+        name: trimmedName,
+        email: trimmedEmail,
+        ...(birthDate
+          ? {
+              birthDate: `${birthDate.slice(6, 10)}-${birthDate.slice(3, 5)}-${birthDate.slice(0, 2)}`,
+            }
+          : {}),
+        document,
+        phone,
+        termsAccepted: true,
+        password,
+      },
+      {
+        onSuccess: () => {
+          setClinicName('')
+          setFullName('')
+          setBirthDate('')
+          setDocument('')
+          setPhone('')
+          setEmail('')
+          setPassword('')
+          setShowPassword(false)
+          setShowPasswordRules(false)
+          setAcceptedTerms(false)
+          setErrors({})
+        },
+      },
+    )
   }
 
   return (
@@ -551,14 +576,20 @@ export function RegisterForm({ content }: RegisterFormProps) {
       </div>
 
       {registerMutation.isError ? (
-        <p role='alert' className='mt-4 text-sm text-red-700'>
-          {registerMutation.error.message}
-        </p>
+        <div className='mt-4'>
+          <Alert
+            variant='error'
+            title='Não foi possível criar a conta'
+            description={registerMutation.error.message}
+          />
+        </div>
       ) : null}
       {registerMutation.isSuccess ? (
-        <p role='status' className='mt-4 text-sm text-green-700'>
-          Conta criada com sucesso. Você já pode fazer login.
-        </p>
+        <Toast
+          title='Conta criada com sucesso.'
+          description=' Você já pode fazer login.'
+          onClose={registerMutation.reset}
+        />
       ) : null}
       <Button
         type='submit'

@@ -1,0 +1,68 @@
+'use client'
+
+import { useMutation } from '@tanstack/react-query'
+
+export type LoginInput = {
+  email: string
+  password: string
+}
+
+type LoginResponse = {
+  accessToken: string
+  user: {
+    id: string
+    clinicId: string
+    name: string
+    email: string
+    role: string
+  }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isLoginResponse(value: unknown): value is LoginResponse {
+  if (!isRecord(value) || !isRecord(value.user)) {
+    return false
+  }
+
+  return (
+    typeof value.accessToken === 'string' &&
+    typeof value.user.id === 'string' &&
+    typeof value.user.clinicId === 'string' &&
+    typeof value.user.name === 'string' &&
+    typeof value.user.email === 'string' &&
+    typeof value.user.role === 'string'
+  )
+}
+
+async function login(input: LoginInput): Promise<LoginResponse> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
+  const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+  const result: unknown = await response.json()
+
+  if (!response.ok) {
+    const message =
+      isRecord(result) && typeof result.error === 'string'
+        ? result.error
+        : 'Não foi possível entrar. Tente novamente.'
+    throw new Error(message)
+  }
+
+  if (!isLoginResponse(result)) {
+    throw new Error('A API retornou uma resposta inválida ao entrar.')
+  }
+
+  return result
+}
+
+export function useLogin() {
+  return useMutation({
+    mutationFn: login,
+  })
+}

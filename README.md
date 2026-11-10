@@ -14,7 +14,7 @@ Produção: [https://smile-sync-front.vercel.app/](https://smile-sync-front.verc
 - [Storybook](https://storybook.js.org) 10 (`@storybook/nextjs-vite`), com documentação, acessibilidade e testes das stories
 - Gerenciador de pacotes: npm (`package-lock.json`)
 
-O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Não há variáveis de ambiente obrigatórias: os textos e os dados de tela vêm de `src/mocks`.
+O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Os textos e os dados de tela vêm de `src/mocks`; o cadastro usa a API configurada por `NEXT_PUBLIC_API_URL` (padrão: `http://localhost:3333`).
 
 ## Começar
 
@@ -27,6 +27,11 @@ npm run dev
 ```
 
 Abra [http://localhost:3000](http://localhost:3000).
+
+Para apontar o cadastro para outra instância da API, copie `.env.example` para
+`.env.local` e defina `NEXT_PUBLIC_API_URL` (por exemplo,
+`http://localhost:3333`). A origem do front também deve estar autorizada em
+`CORS_ORIGINS` no projeto da API.
 
 | Script | O que faz |
 | --- | --- |

@@ -1,7 +1,9 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { InternalTemplate } from '@/modules/internal/components/InternalTemplate'
 import { internalContent } from '@/mocks/internal'
 import { reactivationContent } from '@/mocks/reactivation'
+import { readAccessToken, saveAccessToken } from '@/modules/auth/session'
+import { InternalTemplate } from '@/modules/internal/components/InternalTemplate'
 
 let mockPathname = '/painel'
 
@@ -9,27 +11,55 @@ jest.mock('next/navigation', () => ({
   usePathname: () => mockPathname,
 }))
 
+const sessionUser = {
+  userId: 'user-id',
+  clinicId: 'clinic-id',
+  name: 'Dra. Ana Silva',
+  role: 'OWNER',
+}
+
 function renderTemplate() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  })
+
   return render(
-    <InternalTemplate content={internalContent}>
-      <p>Conteúdo da página</p>
-    </InternalTemplate>,
+    <QueryClientProvider client={queryClient}>
+      <InternalTemplate content={internalContent}>
+        <p>Conteúdo da página</p>
+      </InternalTemplate>
+    </QueryClientProvider>,
   )
 }
 
 describe('InternalTemplate', () => {
-  afterEach(() => {
-    mockPathname = '/painel'
+  beforeEach(() => {
+    sessionStorage.clear()
+    localStorage.clear()
+    saveAccessToken('access-token', false)
+    global.fetch = jest.fn()
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => sessionUser,
+    } as Response)
   })
 
-  it('mostra o menu da clínica, o usuário e o título da rota atual', () => {
+  afterEach(() => {
+    mockPathname = '/painel'
+    jest.restoreAllMocks()
+  })
+
+  it('mostra o menu da clínica, o usuário da sessão e o título da rota atual', async () => {
     renderTemplate()
     const painel = internalContent.navigation[0]
 
     expect(screen.getByRole('heading', { name: painel.title })).toBeInTheDocument()
     expect(screen.getByText(painel.description)).toBeInTheDocument()
-    expect(screen.getByText(internalContent.user.name)).toBeInTheDocument()
-    expect(screen.getByText(internalContent.user.role)).toBeInTheDocument()
+    expect(await screen.findByText(sessionUser.name)).toBeInTheDocument()
+    expect(screen.getByText('Diretor clínico')).toBeInTheDocument()
+    expect(screen.queryByText(internalContent.user.name)).not.toBeInTheDocument()
+    expect(screen.queryByText(internalContent.user.role)).not.toBeInTheDocument()
     expect(screen.getByText(internalContent.plan.usageLabel)).toBeInTheDocument()
     expect(screen.getByText('Conteúdo da página')).toBeInTheDocument()
 
@@ -42,6 +72,15 @@ describe('InternalTemplate', () => {
       'href',
       internalContent.logout.href,
     )
+  })
+
+  it('encerra a sessão ao sair', () => {
+    saveAccessToken('access-token', true)
+    renderTemplate()
+
+    fireEvent.click(screen.getByRole('link', { name: internalContent.logout.label }))
+
+    expect(readAccessToken()).toBeNull()
   })
 
   it('recolhe o menu e abre as notificações', () => {

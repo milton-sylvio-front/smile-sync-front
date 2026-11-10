@@ -17,8 +17,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${montserrat.variable} h-full antialiased`}>
-      <body className="min-h-full bg-white font-sans text-ink">
+    <html
+      lang="pt-BR"
+      className={`${montserrat.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <body
+        className="min-h-full bg-white font-sans text-ink"
+        suppressHydrationWarning
+      >
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

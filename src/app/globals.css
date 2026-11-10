@@ -6,6 +6,16 @@ body {
   color: #06343b;
 }
 
+@keyframes toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
 button,
 input[type='checkbox'],
 input[type='radio'] {

@@ -3,9 +3,13 @@
 import { useMutation } from '@tanstack/react-query'
 
 export type RegisterInput = {
-  clinicName: string
+  clinicName?: string
   name: string
   email: string
+  birthDate?: string
+  document: string
+  phone: string
+  termsAccepted: true
   password: string
 }
 

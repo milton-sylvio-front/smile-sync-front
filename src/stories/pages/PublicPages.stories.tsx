@@ -34,7 +34,11 @@ export const Inicio: Story = {
 }
 
 export const Entrar: Story = {
-  render: () => <LoginPage content={loginContent} />,
+  render: () => (
+    <QueryProvider>
+      <LoginPage content={loginContent} />
+    </QueryProvider>
+  ),
 }
 
 export const Cadastro: Story = {
