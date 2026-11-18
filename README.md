@@ -14,7 +14,7 @@ Produção: [https://smile-sync-front.vercel.app/](https://smile-sync-front.verc
 - [Storybook](https://storybook.js.org) 10 (`@storybook/nextjs-vite`), com documentação, acessibilidade e testes das stories
 - Gerenciador de pacotes: npm (`package-lock.json`)
 
-O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Os textos e os dados de tela vêm de `src/mocks`; o cadastro usa a API configurada por `NEXT_PUBLIC_API_URL` (padrão: `http://localhost:3333`).
+O `next.config.ts` liga `cacheComponents` e `partialPrefetching`. Os textos e os dados de tela vêm de `src/mocks`. Cadastro, login e sessão chamam a API de `NEXT_PUBLIC_API_URL`: `http://localhost:3333` em desenvolvimento (`.env.development`) e `https://smile-sync-back.vercel.app` em produção (`.env.production`). Um valor de localhost não é usado no build de produção.
 
 ## Começar
 

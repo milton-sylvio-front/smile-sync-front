@@ -1,6 +1,7 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
+import { getApiBaseUrl } from '@/lib/api-base-url'
 
 export type LoginInput = {
   email: string
@@ -38,7 +39,7 @@ function isLoginResponse(value: unknown): value is LoginResponse {
 }
 
 async function login(input: LoginInput): Promise<LoginResponse> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
+  const baseUrl = getApiBaseUrl()
   const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

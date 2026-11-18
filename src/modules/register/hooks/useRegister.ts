@@ -1,6 +1,7 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
+import { getApiBaseUrl } from '@/lib/api-base-url'
 
 export type RegisterInput = {
   clinicName?: string
@@ -44,7 +45,7 @@ function isRegisterResponse(value: unknown): value is RegisterResponse {
 }
 
 async function register(input: RegisterInput): Promise<RegisterResponse> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
+  const baseUrl = getApiBaseUrl()
   const response = await fetch(
     `${baseUrl.replace(/\/$/, '')}/api/auth/register`,
     {

@@ -14,12 +14,12 @@ import { ScheduleProvider } from '@/modules/schedule/state/ScheduleProvider'
 export default async function InternalLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get(accessTokenStorageKey)?.value
 
-  if (!token) {
-    redirect('/entrar')
-  }
+  // if (!token) {
+  //   redirect('/entrar')
+  // }
 
   return (
-    <RequireSession token={token}>
+    <RequireSession token={token ?? null}>
       <PatientsProvider content={patientsContent} formContent={newPatientContent}>
         <ScheduleProvider content={scheduleContent}>
           <FinanceProvider content={financeContent}>

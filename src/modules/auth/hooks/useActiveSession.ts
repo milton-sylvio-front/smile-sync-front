@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { getApiBaseUrl } from '@/lib/api-base-url'
 import { clearAccessToken } from '@/modules/auth/session'
 
 export type ActiveSession = {
@@ -25,7 +26,7 @@ function isActiveSession(value: unknown): value is ActiveSession {
 }
 
 export async function fetchActiveSession(token: string): Promise<ActiveSession> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333'
+  const baseUrl = getApiBaseUrl()
   const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   })

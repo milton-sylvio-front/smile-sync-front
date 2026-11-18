@@ -4,6 +4,7 @@ import { FormEvent, useState } from 'react'
 import { Alert } from '@/components/alert/Alert'
 import { Button } from '@/components/button/Button'
 import { Toast } from '@/components/toast/Toast'
+import { Tooltip } from '@/components/tooltip/Tooltip'
 import { LegalModal } from '@/modules/register/components/LegalModal'
 import { useRegister } from '@/modules/register/hooks/useRegister'
 import type {
@@ -425,7 +426,21 @@ export function RegisterForm({ content }: RegisterFormProps) {
           <label htmlFor='senha' className='text-sm font-medium text-ink'>
             {content.password.label}
           </label>
-          <div className='group relative'>
+          <Tooltip
+            id='senha-regras'
+            open={showPasswordRules}
+            content={
+              <>
+                <p className='mb-1 font-semibold'>A senha deve conter</p>
+                <ul className='list-inside list-disc'>
+                  <li>No mínimo 8 caracteres</li>
+                  <li>Pelo menos 1 letra maiúscula</li>
+                  <li>Pelo menos 1 número</li>
+                  <li>Pelo menos 1 caractere especial</li>
+                </ul>
+              </>
+            }
+          >
             <button
               type='button'
               aria-label='Regras da senha'
@@ -446,28 +461,7 @@ export function RegisterForm({ content }: RegisterFormProps) {
                 <path strokeLinecap='round' d='M12 11v5m0-8h.01' />
               </svg>
             </button>
-            <div
-              id='senha-regras'
-              role='tooltip'
-              className={`absolute bottom-full right-0 z-10 mb-2 w-56 rounded-md bg-primary px-3 py-2 text-xs leading-4 text-white shadow-lg transition-opacity ${
-                showPasswordRules
-                  ? 'visible opacity-100'
-                  : 'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100'
-              }`}
-            >
-              <p className='mb-1 font-semibold'>A senha deve conter</p>
-              <ul className='list-inside list-disc'>
-                <li>No mínimo 8 caracteres</li>
-                <li>Pelo menos 1 letra maiúscula</li>
-                <li>Pelo menos 1 número</li>
-                <li>Pelo menos 1 caractere especial</li>
-              </ul>
-              <span
-                aria-hidden='true'
-                className='absolute -bottom-1 right-2 h-2 w-2 rotate-45 bg-primary'
-              />
-            </div>
-          </div>
+          </Tooltip>
         </div>
         <div className='relative'>
           <input
