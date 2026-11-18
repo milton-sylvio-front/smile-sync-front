@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { financeContent } from '@/mocks/finance'
 import { internalContent } from '@/mocks/internal'
 import { newPatientContent, patientsContent } from '@/mocks/patients'
@@ -13,10 +12,6 @@ import { ScheduleProvider } from '@/modules/schedule/state/ScheduleProvider'
 
 export default async function InternalLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get(accessTokenStorageKey)?.value
-
-  // if (!token) {
-  //   redirect('/entrar')
-  // }
 
   return (
     <RequireSession token={token ?? null}>
