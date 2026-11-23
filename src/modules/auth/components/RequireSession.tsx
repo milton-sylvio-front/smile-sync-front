@@ -24,16 +24,20 @@ export function RequireSession({ token, children }: RequireSessionProps) {
   }, [session.isError])
 
   if (!session.isSuccess) {
-    return (
-      <main className='flex min-h-screen items-center justify-center bg-[#f5f7fa]'>
-        <Image
-          src={smilesyncLogoAnimation}
-          alt='Carregando...'
-          priority
-        />
-      </main>
-    )
+    return <SessionLoading />
   }
 
   return children
+}
+
+export function SessionLoading() {
+  return (
+    <main className='flex min-h-screen items-center justify-center bg-[#f5f7fa]'>
+      <Image
+        src={smilesyncLogoAnimation}
+        alt='Carregando...'
+        priority
+      />
+    </main>
+  )
 }

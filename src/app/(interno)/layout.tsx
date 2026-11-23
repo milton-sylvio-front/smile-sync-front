@@ -1,16 +1,25 @@
+import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { financeContent } from '@/mocks/finance'
 import { internalContent } from '@/mocks/internal'
 import { newPatientContent, patientsContent } from '@/mocks/patients'
 import { scheduleContent } from '@/mocks/schedule'
-import { RequireSession } from '@/modules/auth/components/RequireSession'
+import { RequireSession, SessionLoading } from '@/modules/auth/components/RequireSession'
 import { accessTokenStorageKey } from '@/modules/auth/session'
 import { FinanceProvider } from '@/modules/finance/state/FinanceProvider'
 import { InternalTemplate } from '@/modules/internal/components/InternalTemplate'
 import { PatientsProvider } from '@/modules/patients/state/PatientsProvider'
 import { ScheduleProvider } from '@/modules/schedule/state/ScheduleProvider'
 
-export default async function InternalLayout({ children }: { children: React.ReactNode }) {
+export default function InternalLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<SessionLoading />}>
+      <AuthenticatedInternalLayout>{children}</AuthenticatedInternalLayout>
+    </Suspense>
+  )
+}
+
+async function AuthenticatedInternalLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get(accessTokenStorageKey)?.value
 
   return (
