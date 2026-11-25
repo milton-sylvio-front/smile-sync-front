@@ -234,6 +234,16 @@ export function RegisterForm({ content }: RegisterFormProps) {
 
   return (
     <form className='flex flex-col' noValidate onSubmit={handleSubmit}>
+      {registerMutation.isError ? (
+        <div className='mt-4'>
+          <Alert
+            variant='error'
+            title='Não foi possível criar a conta'
+            description={registerMutation.error.message}
+          />
+        </div>
+      ) : null}
+      
       <div>
         <label
           htmlFor='nome-clinica'
@@ -569,15 +579,6 @@ export function RegisterForm({ content }: RegisterFormProps) {
         ) : null}
       </div>
 
-      {registerMutation.isError ? (
-        <div className='mt-4'>
-          <Alert
-            variant='error'
-            title='Não foi possível criar a conta'
-            description={registerMutation.error.message}
-          />
-        </div>
-      ) : null}
       {registerMutation.isSuccess ? (
         <Toast
           title='Conta criada com sucesso.'
