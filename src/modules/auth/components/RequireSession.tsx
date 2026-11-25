@@ -23,11 +23,31 @@ export function RequireSession({ token, children }: RequireSessionProps) {
     redirectToLogin()
   }, [session.isError])
 
-  if (!session.isSuccess) {
+  if (session.isError) {
     return <SessionLoading />
   }
 
-  return children
+  return (
+    <>
+      {session.isSuccess ? null : (
+        <div className='fixed inset-0 z-50'>
+          <SessionLoading />
+        </div>
+      )}
+      <div hidden={session.isSuccess ? undefined : true}>{children}</div>
+    </>
+  )
+}
+
+export function SessionPending({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <div className='fixed inset-0 z-50'>
+        <SessionLoading />
+      </div>
+      <div hidden>{children}</div>
+    </>
+  )
 }
 
 export function SessionLoading() {

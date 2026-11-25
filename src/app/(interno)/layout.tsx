@@ -4,7 +4,7 @@ import { financeContent } from '@/mocks/finance'
 import { internalContent } from '@/mocks/internal'
 import { newPatientContent, patientsContent } from '@/mocks/patients'
 import { scheduleContent } from '@/mocks/schedule'
-import { RequireSession, SessionLoading } from '@/modules/auth/components/RequireSession'
+import { RequireSession, SessionPending } from '@/modules/auth/components/RequireSession'
 import { accessTokenStorageKey } from '@/modules/auth/session'
 import { FinanceProvider } from '@/modules/finance/state/FinanceProvider'
 import { InternalTemplate } from '@/modules/internal/components/InternalTemplate'
@@ -13,9 +13,15 @@ import { ScheduleProvider } from '@/modules/schedule/state/ScheduleProvider'
 
 export default function InternalLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<SessionLoading />}>
-      <AuthenticatedInternalLayout>{children}</AuthenticatedInternalLayout>
-    </Suspense>
+    <PatientsProvider content={patientsContent} formContent={newPatientContent}>
+      <ScheduleProvider content={scheduleContent}>
+        <FinanceProvider content={financeContent}>
+          <Suspense fallback={<SessionPending>{children}</SessionPending>}>
+            <AuthenticatedInternalLayout>{children}</AuthenticatedInternalLayout>
+          </Suspense>
+        </FinanceProvider>
+      </ScheduleProvider>
+    </PatientsProvider>
   )
 }
 
@@ -24,13 +30,7 @@ async function AuthenticatedInternalLayout({ children }: { children: React.React
 
   return (
     <RequireSession token={token ?? null}>
-      <PatientsProvider content={patientsContent} formContent={newPatientContent}>
-        <ScheduleProvider content={scheduleContent}>
-          <FinanceProvider content={financeContent}>
-            <InternalTemplate content={internalContent}>{children}</InternalTemplate>
-          </FinanceProvider>
-        </ScheduleProvider>
-      </PatientsProvider>
+      <InternalTemplate content={internalContent}>{children}</InternalTemplate>
     </RequireSession>
   )
 }
