@@ -235,7 +235,7 @@ export function RegisterForm({ content }: RegisterFormProps) {
   return (
     <form className='flex flex-col' noValidate onSubmit={handleSubmit}>
       {registerMutation.isError ? (
-        <div className='mt-4'>
+        <div className='mb-4'>
           <Alert
             variant='error'
             title='Não foi possível criar a conta'
