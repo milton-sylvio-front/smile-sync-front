@@ -14,14 +14,14 @@ jest.mock('@/modules/auth/session', () => {
   }
 })
 
-function renderSession() {
+function renderSession(token: string | null = 'access-token') {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <RequireSession token='access-token'>
+      <RequireSession token={token}>
         <p>Área da clínica</p>
       </RequireSession>
     </QueryClientProvider>,
@@ -80,6 +80,15 @@ describe('RequireSession', () => {
       expect(redirectToLogin).toHaveBeenCalled()
     })
     expect(readAccessToken()).toBeNull()
+    expect(screen.queryByText('Área da clínica')).not.toBeInTheDocument()
+  })
+
+  it('redireciona para o login quando não há token', async () => {
+    renderSession(null)
+
+    await waitFor(() => {
+      expect(redirectToLogin).toHaveBeenCalled()
+    })
     expect(screen.queryByText('Área da clínica')).not.toBeInTheDocument()
   })
 })

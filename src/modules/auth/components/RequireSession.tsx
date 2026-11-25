@@ -13,17 +13,18 @@ type RequireSessionProps = {
 
 export function RequireSession({ token, children }: RequireSessionProps) {
   const session = useActiveSession(token)
+  const sessionRejected = !token || session.isError
 
   useEffect(() => {
-    if (!session.isError) {
+    if (!sessionRejected) {
       return
     }
 
     clearAccessToken()
     redirectToLogin()
-  }, [session.isError])
+  }, [sessionRejected])
 
-  if (session.isError) {
+  if (sessionRejected) {
     return <SessionLoading />
   }
 

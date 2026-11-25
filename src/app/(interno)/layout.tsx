@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { financeContent } from '@/mocks/finance'
 import { internalContent } from '@/mocks/internal'
 import { newPatientContent, patientsContent } from '@/mocks/patients'
@@ -28,8 +29,12 @@ export default function InternalLayout({ children }: { children: React.ReactNode
 async function AuthenticatedInternalLayout({ children }: { children: React.ReactNode }) {
   const token = (await cookies()).get(accessTokenStorageKey)?.value
 
+  if (!token) {
+    redirect('/entrar')
+  }
+
   return (
-    <RequireSession token={token ?? null}>
+    <RequireSession token={token}>
       <InternalTemplate content={internalContent}>{children}</InternalTemplate>
     </RequireSession>
   )
